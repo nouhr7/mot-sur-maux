@@ -8,7 +8,7 @@
   <div class="container article-hero__inner">
     <a href="{{ article.category.get_absolute_url }}"><span class="chip" style="background: {{ article.category.color }}">{{ article.category.name }}</span></a>
     <h1>{{ article.title }}</h1>
-    <p class="meta">Par {{ article.author_name }} · {{ article.published_at|date:"j F Y" }} · {{ article.reading_minutes }} min de lecture</p>
+    <p class="meta">Par <a class="meta-link" href="{{ article.author.get_absolute_url }}">{{ article.author.name }}</a> · {{ article.published_at|date:"j F Y" }} · {{ article.reading_minutes }} min de lecture</p>
   </div>
 </section>
 
@@ -29,6 +29,22 @@
   {% if article.source_submission %}
     <p class="credit">Cet article s'inspire d'une soumission anonyme reçue sur la plateforme.</p>
   {% endif %}
+
+  <aside class="author-box">
+    <a class="author-box__avatar" href="{{ article.author.get_absolute_url }}">
+      {% if article.author.photo %}
+        <img src="{{ article.author.photo.url }}" alt="{{ article.author.name }}">
+      {% else %}
+        <span>{{ article.author.initials }}</span>
+      {% endif %}
+    </a>
+    <div>
+      {% if article.author.role %}<p class="eyebrow">{{ article.author.role }}</p>{% endif %}
+      <h3 style="margin:.1rem 0 .3rem"><a href="{{ article.author.get_absolute_url }}">{{ article.author.name }}</a></h3>
+      {% if article.author.bio %}<p style="margin:0; color:var(--muted)">{{ article.author.bio|truncatewords:45 }}</p>{% endif %}
+      <p style="margin:.6rem 0 0"><a href="{{ article.author.get_absolute_url }}">Voir tous ses articles →</a></p>
+    </div>
+  </aside>
 </article>
 
 {% if related %}

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Ressources en santé mentale — {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}Des ressources d'aide en santé mentale : lignes d'écoute, centres et services à contacter en cas de détresse, de deuil ou d'anxiété.{% endblock %}
+
+{% block content %}
+<section class="article-hero">
+  <div class="container article-hero__inner">
+    <p class="eyebrow" style="color:#9fd3bd">Ressources</p>
+    <h1>Vous n'avez pas à traverser ça seul·e</h1>
+    <p class="meta">Mots sur Maux est un projet d'éducation et de prévention — il ne remplace
+      pas un suivi professionnel. Si vous traversez une période difficile, voici des
+      ressources fiables vers qui vous tourner.</p>
+  </div>
+</section>
+
+{% if urgent %}
+<section class="section">
+  <div class="container">
+    <div class="urgent-band">
+      <h2>Besoin d'aide maintenant ?</h2>
+      {% for cat in urgent %}
+        {% for r in cat.resources.all %}
+          <div class="urgent-line">
+            <div>
+              <strong>{{ r.name }}</strong>
+              {% if r.description %}<span> — {{ r.description }}</span>{% endif %}
+              {% if r.availability %}<span class="tag" style="margin-left:.4rem">{{ r.availability }}</span>{% endif %}
+            </div>
+            <div class="urgent-line__actions">
+              {% if r.phone %}<a class="btn btn--light btn--small" href="tel:{{ r.phone|cut:' ' }}">Appeler {{ r.phone }}</a>{% endif %}
+              {% if r.text_number %}<span class="tag">Texto : {{ r.text_number }}</span>{% endif %}
+              {% if r.url %}<a class="btn btn--ghost btn--light btn--small" href="{{ r.url }}">Site</a>{% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="section{% if not urgent %}{% else %} section--tint{% endif %}">
+  <div class="container">
+    {% for cat in others %}
+      <div class="section__head" {% if not forloop.first %}style="margin-top:2.5rem"{% endif %}>
+        <p class="eyebrow">{{ cat.name }}</p>
+        {% if cat.description %}<p class="lead">{{ cat.description }}</p>{% endif %}
+      </div>
+      <div class="card-grid">
+        {% for r in cat.resources.all %}
+          <article class="resource-card">
+            <h3>{{ r.name }}</h3>
+            {% if r.region %}<span class="tag">{{ r.region }}</span>{% endif %}
+            {% if r.description %}<p>{{ r.description }}</p>{% endif %}
+            <ul class="resource-card__contact">
+              {% if r.phone %}<li>📞 <a href="tel:{{ r.phone|cut:' ' }}">{{ r.phone }}</a></li>{% endif %}
+              {% if r.text_number %}<li>💬 Texto : {{ r.text_number }}</li>{% endif %}
+              {% if r.availability %}<li>🕑 {{ r.availability }}</li>{% endif %}
+              {% if r.url %}<li>🔗 <a href="{{ r.url }}">Site web</a></li>{% endif %}
+            </ul>
+          </article>
+        {% endfor %}
+      </div>
+    {% empty %}
+      {% if not urgent %}
+        <p class="empty-state">Les ressources seront ajoutées prochainement.</p>
+      {% endif %}
+    {% endfor %}
+
+    <p class="lead" style="margin-top:2.5rem">{{ DISCLAIMER }}</p>
+  </div>
+</section>
+{% endblock %}

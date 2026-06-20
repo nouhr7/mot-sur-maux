@@ -17,6 +17,9 @@
   <header class="site-header">
     <div class="container site-header__inner">
       <a class="brand" href="{% url 'core:home' %}">
+        {# Logo à venir : déposez le fichier dans static/img/logo.svg puis
+           remplacez la pastille ci-dessous par :
+           <img class="brand__logo" src="{% static 'img/logo.svg' %}" alt="Mots sur Maux"> #}
         <span class="brand__mark" aria-hidden="true">✶</span>
         <span class="brand__text">
           <span class="brand__name">Mots sur Maux</span>
@@ -33,6 +36,7 @@
         <a href="{% url 'core:projet' %}">Le projet</a>
         <a href="{% url 'workshops:list' %}">Les ateliers</a>
         <a href="{% url 'blog:article_list' %}">Articles</a>
+        <a href="{% url 'resources:list' %}">Ressources</a>
         <a href="{% url 'core:contact' %}">Contact</a>
         <a class="btn btn--small btn--primary" href="{% url 'submissions:submit' %}">Soumettre un texte</a>
       </nav>
@@ -63,6 +67,7 @@
           <li><a href="{% url 'core:projet' %}">Le projet</a></li>
           <li><a href="{% url 'workshops:list' %}">Les ateliers</a></li>
           <li><a href="{% url 'blog:article_list' %}">Articles</a></li>
+          <li><a href="{% url 'resources:list' %}">Ressources</a></li>
           <li><a href="{% url 'submissions:submit' %}">Soumettre un texte</a></li>
           <li><a href="{% url 'core:contact' %}">Contact</a></li>
         </ul>

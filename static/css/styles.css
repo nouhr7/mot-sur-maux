@@ -434,3 +434,71 @@ img { max-width: 100%; display: block; }
   .main-nav a { padding: .6rem 0; }
   .nav-toggle:checked ~ .main-nav { display: flex; }
 }
+
+/* --- Logo (swap-in) -------------------------------------------------------- */
+.brand__logo { height: 42px; width: auto; display: block; }
+
+/* Link that sits on a dark green hero band. */
+.meta-link { color: var(--cream); text-decoration: underline; }
+.article-hero a:not(.btn):not(.chip) { color: var(--cream); }
+
+/* --- Author (byline page + box) -------------------------------------------- */
+.author-hero { display: flex; gap: 1.6rem; align-items: center; }
+.author-hero__avatar,
+.author-box__avatar,
+.founder-card__avatar {
+  flex: 0 0 auto;
+  border-radius: 50%;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: var(--green-700);
+  color: var(--cream);
+  font-family: var(--font-display);
+}
+.author-hero__avatar { width: 96px; height: 96px; font-size: 2rem; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.25); }
+.author-hero__avatar img, .author-box__avatar img, .founder-card__avatar img { width: 100%; height: 100%; object-fit: cover; }
+.author-box {
+  display: flex;
+  gap: 1.2rem;
+  align-items: flex-start;
+  background: var(--green-100);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-top: 2.5rem;
+}
+.author-box__avatar { width: 64px; height: 64px; font-size: 1.3rem; }
+
+/* --- Founders -------------------------------------------------------------- */
+.founder-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.4rem; }
+.founder-card { background: var(--cream-card); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.6rem; text-align: center; }
+.founder-card__avatar { width: 84px; height: 84px; font-size: 1.6rem; margin: 0 auto 1rem; }
+.founder-card p { color: var(--muted); }
+.founder-card .eyebrow { margin-bottom: .5rem; }
+
+/* --- Booking contact cards ------------------------------------------------- */
+.contact-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; }
+.contact-card { background: var(--cream-card); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.7rem; }
+.contact-card h3 { margin: .2rem 0 .6rem; }
+
+/* --- Partners -------------------------------------------------------------- */
+.partner-strip { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; align-items: center; }
+.partner { display: inline-grid; place-items: center; background: var(--cream-card); border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1.4rem; color: var(--green-800); font-weight: 600; min-width: 140px; }
+.partner img { max-height: 48px; width: auto; }
+
+/* --- Resources page -------------------------------------------------------- */
+.urgent-band { background: var(--green-800); color: var(--cream); border-radius: var(--radius-lg); padding: clamp(1.6rem, 4vw, 2.4rem); }
+.urgent-band h2 { color: var(--cream); }
+.urgent-line { display: flex; flex-wrap: wrap; gap: .8rem; justify-content: space-between; align-items: center; padding: .9rem 0; border-top: 1px solid rgba(255,255,255,.16); }
+.urgent-line:first-of-type { border-top: none; padding-top: .4rem; }
+.urgent-line__actions { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; }
+.resource-card { background: var(--cream-card); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.6rem; }
+.resource-card h3 { margin-bottom: .4rem; }
+.resource-card__contact { list-style: none; padding: 0; margin: .9rem 0 0; }
+.resource-card__contact li { margin-bottom: .4rem; }
+
+@media (max-width: 880px) {
+  .contact-cards { grid-template-columns: 1fr; }
+  .author-hero { flex-direction: column; text-align: center; align-items: flex-start; }
+}

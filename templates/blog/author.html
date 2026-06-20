@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}{{ author.name }} — {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}{{ author.bio|truncatewords:25 }}{% endblock %}
+
+{% block content %}
+<section class="article-hero">
+  <div class="container article-hero__inner author-hero">
+    <div class="author-hero__avatar">
+      {% if author.photo %}
+        <img src="{{ author.photo.url }}" alt="{{ author.name }}">
+      {% else %}
+        <span>{{ author.initials }}</span>
+      {% endif %}
+    </div>
+    <div>
+      {% if author.role %}<p class="eyebrow" style="color:#9fd3bd">{{ author.role }}</p>{% endif %}
+      <h1>{{ author.name }}</h1>
+      {% if author.bio %}<p class="meta">{{ author.bio }}</p>{% endif %}
+      <p class="meta" style="margin-top:.6rem">
+        {% if author.website %}<a class="meta-link" href="{{ author.website }}">Site web</a>{% endif %}
+        {% if author.website and author.email %} · {% endif %}
+        {% if author.email %}<a class="meta-link" href="mailto:{{ author.email }}">{{ author.email }}</a>{% endif %}
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section__head">
+      <p class="eyebrow">Ses publications</p>
+      <h2>Articles de {{ author.name }}</h2>
+    </div>
+    {% if page_obj %}
+      <div class="card-grid">
+        {% for article in page_obj %}
+          {% include "blog/_article_card.html" with article=article %}
+        {% endfor %}
+      </div>
+      {% include "blog/_pagination.html" %}
+    {% else %}
+      <p class="empty-state">Aucun article publié pour le moment.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

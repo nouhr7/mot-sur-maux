@@ -18,3 +18,44 @@ class ContactMessage(models.Model):
 
     def __str__(self):
         return f"{self.name} — {self.subject or 'Sans sujet'}"
+
+
+class Founder(models.Model):
+    """A founder / core team member presented on the project page."""
+
+    name = models.CharField("Nom", max_length=120)
+    role = models.CharField("Rôle", max_length=120, blank=True)
+    bio = models.TextField("Présentation", blank=True)
+    photo = models.ImageField("Photo", upload_to="founders/", blank=True, null=True)
+    order = models.PositiveIntegerField("Ordre d'affichage", default=0)
+    is_active = models.BooleanField("Affiché", default=True)
+
+    class Meta:
+        verbose_name = "Fondateur·rice / équipe"
+        verbose_name_plural = "Fondateur·rices / équipe"
+        ordering = ["order", "name"]
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def initials(self):
+        return "".join(part[0] for part in self.name.split()[:2]).upper()
+
+
+class Partner(models.Model):
+    """A partner organisation (schools, camps, community orgs)."""
+
+    name = models.CharField("Nom", max_length=160)
+    url = models.URLField("Site web", blank=True)
+    logo = models.ImageField("Logo", upload_to="partners/", blank=True, null=True)
+    order = models.PositiveIntegerField("Ordre d'affichage", default=0)
+    is_active = models.BooleanField("Affiché", default=True)
+
+    class Meta:
+        verbose_name = "Partenaire"
+        verbose_name_plural = "Partenaires"
+        ordering = ["order", "name"]
+
+    def __str__(self):
+        return self.name

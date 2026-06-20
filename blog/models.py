@@ -38,6 +38,58 @@ class Category(models.Model):
         return self.articles(manager="published").count()
 
 
+class Author(models.Model):
+    """Someone who writes articles on the platform.
+
+    « Je veux qu'on puisse cliquer sur le nom de l'auteur → ça dirige vers une
+    page de l'auteur (biographie). »
+    """
+
+    name = models.CharField("Nom affiché", max_length=120)
+    slug = models.SlugField("Identifiant URL", max_length=140, unique=True, blank=True)
+    role = models.CharField(
+        "Rôle / titre",
+        max_length=120,
+        blank=True,
+        help_text="Ex. : Autrice invitée, Collectif, Bénévole…",
+    )
+    bio = models.TextField("Biographie", blank=True)
+    photo = models.ImageField("Photo", upload_to="authors/", blank=True, null=True)
+    email = models.EmailField("Courriel (facultatif)", blank=True)
+    website = models.URLField("Site / réseau (facultatif)", blank=True)
+    is_active = models.BooleanField("Actif", default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Auteur·rice"
+        verbose_name_plural = "Auteur·rices"
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base = slugify(self.name)[:120] or "auteur"
+            slug, counter = base, 2
+            while Author.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base}-{counter}"
+                counter += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("blog:author", args=[self.slug])
+
+    @property
+    def initials(self):
+        return "".join(part[0] for part in self.name.split()[:2]).upper()
+
+    @property
+    def article_count(self):
+        return self.articles(manager="published").count()
+
+
 class PublishedManager(models.Manager):
     """Only articles that are published and whose date has passed."""
 
@@ -60,8 +112,11 @@ class Article(models.Model):
         related_name="articles",
         on_delete=models.PROTECT,
     )
-    author_name = models.CharField(
-        "Signature", max_length=120, default="L'équipe Mots sur Maux"
+    author = models.ForeignKey(
+        Author,
+        verbose_name="Auteur·rice",
+        related_name="articles",
+        on_delete=models.PROTECT,
     )
     excerpt = models.TextField(
         "Chapeau / résumé",

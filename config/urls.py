@@ -11,6 +11,7 @@ urlpatterns = [
     path("articles/", include("blog.urls")),
     path("ateliers/", include("workshops.urls")),
     path("soumettre/", include("submissions.urls")),
+    path("ressources/", include("resources.urls")),
 ]
 
 # Sert les fichiers téléversés (images) pendant le développement.

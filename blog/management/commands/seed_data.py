@@ -2,6 +2,11 @@
 
 Usage:
     python manage.py seed_data
+
+Creates: blog categories, a default (collective) author and a few articles, plus
+a set of real mental-health resources. It does NOT create workshops — none have
+taken place yet (that is the project's vision), so the site shows an honest empty
+state instead.
 """
 
 from datetime import timedelta
@@ -9,8 +14,8 @@ from datetime import timedelta
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 
-from blog.models import Article, Category
-from workshops.models import HostType, Workshop
+from blog.models import Article, Author, Category
+from resources.models import Resource, ResourceCategory
 
 CATEGORIES = [
     ("Anxiété", "#1c5c49", "Comprendre et apprivoiser l'anxiété au quotidien."),
@@ -19,6 +24,16 @@ CATEGORIES = [
     ("Estime de soi", "#4a7c59", "Réapprendre à se regarder avec douceur."),
     ("Solitude", "#2b5d4a", "Mettre des mots sur le sentiment d'être seul."),
 ]
+
+AUTHOR = {
+    "name": "L'équipe Mots sur Maux",
+    "role": "Collectif",
+    "bio": (
+        "Les textes signés par le collectif sont rédigés par l'équipe de Mots sur "
+        "Maux, en s'appuyant sur des recherches et des échanges avec des personnes "
+        "concernées. Bientôt, différentes plumes invitées partageront ici leurs mots."
+    ),
+}
 
 ARTICLES = [
     {
@@ -125,54 +140,68 @@ ARTICLES = [
     },
 ]
 
-WORKSHOPS = [
+# Ressources réelles (Canada / Québec). À vérifier et adapter à votre région.
+RESOURCE_CATEGORIES = [
     {
-        "title": "Atelier d'écriture émotionnelle — secondaire",
-        "host_type": HostType.SCHOOL,
-        "location_name": "École secondaire De la Rive",
-        "city": "Gatineau",
-        "audience": "Élèves de 13 à 16 ans",
-        "days": 18,
-        "description": (
-            "Un atelier d'écriture guidée pour explorer ses émotions sans pression de "
-            "performance. À travers des exercices simples et collectifs, les participants "
-            "apprennent à mettre des mots sur ce qu'ils ressentent.\n"
-            "Aucune expérience d'écriture requise. L'accent est mis sur le processus, "
-            "pas sur le résultat."
-        ),
+        "name": "Pensées suicidaires ou détresse immédiate",
+        "urgent": True,
+        "order": 0,
+        "description": "Si vous êtes en danger immédiat, n'attendez pas.",
+        "resources": [
+            {
+                "name": "9-8-8 — Ligne d'aide en cas de crise de suicide",
+                "description": "Appelez ou textez le 9-8-8, gratuitement et confidentiellement.",
+                "phone": "9-8-8", "text_number": "9-8-8",
+                "availability": "24 h/24, 7 j/7", "region": "Canada",
+            },
+            {
+                "name": "911 — Urgences",
+                "description": "En cas de danger vital immédiat pour vous ou autrui.",
+                "phone": "911", "availability": "24 h/24", "region": "Canada",
+            },
+        ],
     },
     {
-        "title": "Mots et émotions — camp d'été",
-        "host_type": HostType.SUMMER_CAMP,
-        "location_name": "Camp Boisé",
-        "city": "Wakefield",
-        "audience": "Jeunes de 9 à 12 ans",
-        "days": 32,
-        "description": (
-            "Une matinée créative où l'écriture rencontre le jeu. Les enfants découvrent "
-            "que les mots peuvent devenir des amis pour dire la joie, la peur ou la "
-            "colère.\nUne approche inclusive, qui privilégie l'oralité et "
-            "l'accompagnement adapté."
-        ),
+        "name": "Jeunes — besoin de parler",
+        "order": 1,
+        "description": "Une oreille à l'écoute, sans jugement.",
+        "resources": [
+            {
+                "name": "Jeunesse, J'écoute",
+                "description": "Soutien confidentiel pour les jeunes, par téléphone ou texto.",
+                "phone": "1-800-668-6868", "text_number": "PARLER au 686868",
+                "availability": "24 h/24, 7 j/7", "region": "Canada",
+            },
+            {
+                "name": "Tel-jeunes",
+                "description": "Intervenants professionnels pour les jeunes du Québec.",
+                "phone": "1-800-263-2266", "text_number": "514-600-1002",
+                "availability": "24 h/24, 7 j/7", "region": "Québec",
+            },
+        ],
     },
     {
-        "title": "Cercle d'écriture — organisme communautaire",
-        "host_type": HostType.COMMUNITY,
-        "location_name": "Maison de quartier Saint-Cœur",
-        "city": "Ottawa",
-        "audience": "Adultes, groupe ouvert",
-        "days": 45,
-        "description": (
-            "Un cercle d'écriture bienveillant pour adultes, autour de thèmes liés au "
-            "vécu émotionnel. Un espace sécuritaire pour poser des mots, à son rythme, "
-            "en toute confidentialité."
-        ),
+        "name": "Anxiété, deuil et détresse psychologique",
+        "order": 2,
+        "description": "Pour traverser une période difficile, à tout âge.",
+        "resources": [
+            {
+                "name": "Info-Social 811 (option 2)",
+                "description": "Service d'intervention psychosociale, jour et nuit.",
+                "phone": "811", "availability": "24 h/24, 7 j/7", "region": "Québec",
+            },
+            {
+                "name": "Votre CLSC ou médecin de famille",
+                "description": "Pour un accompagnement et une orientation adaptés à votre situation.",
+                "region": "Québec",
+            },
+        ],
     },
 ]
 
 
 class Command(BaseCommand):
-    help = "Crée des catégories, articles et ateliers de démonstration."
+    help = "Crée des catégories, un auteur, des articles et des ressources de démonstration."
 
     def handle(self, *args, **options):
         now = timezone.now()
@@ -185,12 +214,18 @@ class Command(BaseCommand):
             categories[name] = cat
         self.stdout.write(self.style.SUCCESS(f"{len(categories)} catégories prêtes."))
 
+        author, _ = Author.objects.get_or_create(
+            name=AUTHOR["name"],
+            defaults={"role": AUTHOR["role"], "bio": AUTHOR["bio"]},
+        )
+
         created = 0
         for offset, data in enumerate(ARTICLES):
-            obj, was_created = Article.objects.get_or_create(
+            _, was_created = Article.objects.get_or_create(
                 title=data["title"],
                 defaults={
                     "category": categories[data["category"]],
+                    "author": author,
                     "excerpt": data["excerpt"],
                     "content": data["content"],
                     "is_published": True,
@@ -201,20 +236,31 @@ class Command(BaseCommand):
             created += was_created
         self.stdout.write(self.style.SUCCESS(f"{created} nouveaux articles créés."))
 
-        w_created = 0
-        for data in WORKSHOPS:
-            _, was_created = Workshop.objects.get_or_create(
-                title=data["title"],
+        r_created = 0
+        for cat_data in RESOURCE_CATEGORIES:
+            cat, _ = ResourceCategory.objects.get_or_create(
+                name=cat_data["name"],
                 defaults={
-                    "host_type": data["host_type"],
-                    "location_name": data["location_name"],
-                    "city": data["city"],
-                    "audience": data["audience"],
-                    "description": data["description"],
-                    "starts_at": now + timedelta(days=data["days"]),
-                    "is_published": True,
+                    "is_urgent": cat_data.get("urgent", False),
+                    "order": cat_data.get("order", 0),
+                    "description": cat_data.get("description", ""),
                 },
             )
-            w_created += was_created
-        self.stdout.write(self.style.SUCCESS(f"{w_created} nouveaux ateliers créés."))
-        self.stdout.write(self.style.SUCCESS("Données de démonstration prêtes."))
+            for j, r in enumerate(cat_data["resources"]):
+                _, was_created = Resource.objects.get_or_create(
+                    category=cat, name=r["name"],
+                    defaults={
+                        "description": r.get("description", ""),
+                        "phone": r.get("phone", ""),
+                        "text_number": r.get("text_number", ""),
+                        "url": r.get("url", ""),
+                        "availability": r.get("availability", ""),
+                        "region": r.get("region", ""),
+                        "order": j,
+                    },
+                )
+                r_created += was_created
+        self.stdout.write(self.style.SUCCESS(f"{r_created} nouvelles ressources créées."))
+        self.stdout.write(self.style.SUCCESS(
+            "Données prêtes. (Aucun atelier créé — c'est la vision : ajoutez-les via l'admin.)"
+        ))

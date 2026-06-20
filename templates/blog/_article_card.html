@@ -10,9 +10,9 @@
     <h3 class="article-card__title"><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h3>
     <p class="article-card__excerpt">{{ article.excerpt }}</p>
     <div class="article-card__meta">
-      <span>{{ article.published_at|date:"j F Y" }}</span>
+      <span>Par <a href="{{ article.author.get_absolute_url }}">{{ article.author.name }}</a></span>
       <span>·</span>
-      <span>{{ article.reading_minutes }} min de lecture</span>
+      <span>{{ article.reading_minutes }} min</span>
     </div>
   </div>
 </article>

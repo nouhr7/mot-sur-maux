@@ -2,22 +2,26 @@
 
 > Mettre des mots sur ses maux, à travers l'écriture.
 
-**Mots sur Maux** est un projet à la fois artistique, thérapeutique, éducatif et
-social qui vise à favoriser le mieux-être psychologique et l'expression de soi à
-travers l'écriture. Ce dépôt contient le site web du projet.
+**Mots sur Maux** est un projet d'**éducation à l'expression des émotions** : il
+invite et guide chacun — et les jeunes en particulier — à mettre des mots sur les
+maux qui les traversent. Ce dépôt contient le site web du projet.
 
-Le site est construit autour des **deux volets** du projet :
+Le site présente l'ensemble du projet, structuré autour de ses **deux volets** :
 
-1. **Des ateliers en présentiel** — organisés dans des écoles, camps d'été et
-   organismes communautaires, pour offrir des espaces sécuritaires d'expression.
-2. **Une plateforme en ligne** — un blog d'articles sur le vécu émotionnel
-   (anxiété, dépendance affective, perte de repères…) qui accepte également des
-   **soumissions anonymes** (idée inspirée de sites de contenu comme
-   [La Rotonde](https://www.larotonde.ca/) pour la partie articles).
+1. **Des ateliers en présentiel** — des ateliers d'écriture guidée auprès des
+   jeunes (écoles, camps d'été, organismes communautaires).
+2. **Une plateforme en ligne** — un blog d'articles signés par différentes plumes
+   (avec **page auteur** cliquable), sur le vécu émotionnel (anxiété, dépendance
+   affective, perte de repères…), qui accepte aussi des **soumissions anonymes**.
+   La partie articles s'inspire de sites de contenu comme
+   [La Rotonde](https://www.larotonde.ca/).
 
-> Mots sur Maux s'inscrit dans une approche de prévention, d'humanisation et
-> d'éducation émotionnelle, **sans prétendre remplacer les services de santé
-> mentale professionnels.**
+Le site comprend aussi une **présentation du projet** (mission, vision,
+fondateurs), une page **Ressources** en santé mentale (lignes d'écoute, centres)
+et la possibilité d'**accueillir / réserver un atelier**.
+
+> Mots sur Maux est un projet d'éducation et de prévention. Il **ne remplace pas
+> un suivi ni les services de santé mentale professionnels.**
 
 ## Stack technique
 
@@ -33,12 +37,13 @@ Le site est construit autour des **deux volets** du projet :
 
 ```
 config/        Réglages, URLs racine, WSGI/ASGI
-core/          Accueil, présentation du projet, contact, branding (context processor)
-blog/          La plateforme en ligne : catégories + articles (comme un journal)
+core/          Accueil, présentation du projet, contact, fondateurs, partenaires
+blog/          La plateforme : catégories + articles + auteurs (pages auteur)
 submissions/   Les soumissions anonymes (« mettre des mots sur ses maux »)
-workshops/     Les ateliers en présentiel + demandes d'atelier des organismes
+workshops/     Les ateliers en présentiel + demandes / réservation d'atelier
+resources/     La page Ressources en santé mentale (situations + lignes d'aide)
 templates/     Gabarits HTML (base + pages + partiels)
-static/css/    Feuille de styles
+static/css/    Feuille de styles (palette verte)
 ```
 
 ## Démarrage rapide
@@ -53,7 +58,7 @@ pip install -r requirements.txt
 # 3. Base de données
 python manage.py migrate
 
-# 4. Données de démonstration (catégories, articles, ateliers)
+# 4. Données de démonstration (catégories, auteur, articles, ressources)
 python manage.py seed_data
 
 # 5. Compte administrateur (pour /admin)
@@ -70,15 +75,17 @@ l'administration sur http://127.0.0.1:8000/admin/.
 
 | URL                | Description                                        |
 |--------------------|----------------------------------------------------|
-| `/`                | Accueil (vitrine, articles à la une, deux volets)  |
-| `/le-projet/`      | Présentation du projet (mission, vision, volets)   |
-| `/articles/`       | La plateforme : liste des articles + filtres       |
-| `/articles/<slug>/`| Article                                            |
-| `/ateliers/`       | Ateliers à venir + passés                          |
-| `/ateliers/demande/`| Formulaire de demande d'atelier (écoles, organismes)|
-| `/soumettre/`      | Formulaire de soumission anonyme                   |
-| `/contact/`        | Formulaire de contact                              |
-| `/admin/`          | Administration (gestion du contenu)                |
+| `/`                  | Accueil (vitrine, articles à la une, deux volets)|
+| `/le-projet/`        | Présentation : constat, conviction, fondateurs   |
+| `/articles/`         | La plateforme : liste des articles + filtres     |
+| `/articles/<slug>/`  | Article (avec encadré auteur)                    |
+| `/articles/auteur/<slug>/` | Page de l'auteur (bio + ses articles)      |
+| `/ateliers/`         | Ateliers (à venir/passés), réservation, partenaires |
+| `/ateliers/demande/` | Formulaire de demande d'atelier                  |
+| `/soumettre/`        | Formulaire de soumission anonyme                 |
+| `/ressources/`       | Ressources en santé mentale (lignes d'aide)      |
+| `/contact/`          | Formulaire de contact                            |
+| `/admin/`            | Administration (gestion du contenu)              |
 
 ## Configuration (variables d'environnement)
 
@@ -89,11 +96,19 @@ l'administration sur http://127.0.0.1:8000/admin/.
 | `DJANGO_ALLOWED_HOSTS`        | `localhost,127.0.0.1,0.0.0.0` |
 | `DJANGO_CSRF_TRUSTED_ORIGINS` | *(vide)*                      |
 
-## Note sur les fichiers audio
+## Contenu & sources
 
-Trois enregistrements audio ont été fournis avec la maquette. Ils **n'ont pas
-encore pu être transcrits** dans l'environnement d'exécution actuel (l'accès
-réseau y bloque les hôtes d'hébergement de modèles de transcription). Le contenu
-de cette première version s'appuie donc sur les diapositives de présentation
-fournies et sur la référence visuelle demandée. Les précisions contenues dans
-les audios pourront être intégrées dans une prochaine itération.
+Le contenu et la structure du site reprennent les **trois briefs audio** fournis
+par le porteur du projet (transcrits), ainsi que les diapositives de présentation.
+
+### À personnaliser ensuite (via l'admin ou des fichiers)
+
+- **Logo** — déposer `static/img/logo.svg` puis l'activer dans `templates/base.html`
+  (un emplacement commenté est prévu). La palette est déjà au **vert**.
+- **Fondateurs** — ajouter les fondateur·rices (nom, rôle, bio, photo) dans
+  l'admin → ils apparaissent sur `/le-projet/`.
+- **Ateliers & partenaires** — à créer dans l'admin au fur et à mesure (aucun
+  atelier n'a encore eu lieu : le site affiche un état vide assumé).
+- **Ressources** — vérifier / adapter les lignes d'aide à votre région.
+- À intégrer quand disponibles : le **document de présentation** du projet et la
+  **référence Wix** du système de publication d'articles.

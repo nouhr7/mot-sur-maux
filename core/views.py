@@ -7,10 +7,11 @@ from blog.models import Article
 from workshops.models import Workshop
 
 from .forms import ContactForm
+from .models import Founder
 
 
 def home(request):
-    articles = Article.published.select_related("category")
+    articles = Article.published.select_related("category", "author")
     featured = articles.filter(is_featured=True).first() or articles.first()
     recent = articles.exclude(pk=featured.pk)[:6] if featured else articles[:6]
 
@@ -30,8 +31,12 @@ def home(request):
 
 
 def projet(request):
-    """« Présentation du projet » — la mission, la vision et les deux volets."""
-    return render(request, "core/projet.html")
+    """« Présentation du projet » — mission, vision, fondateurs et deux volets."""
+    return render(
+        request,
+        "core/projet.html",
+        {"founders": Founder.objects.filter(is_active=True)},
+    )
 
 
 def contact(request):

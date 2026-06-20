@@ -3,6 +3,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
 
+from core.models import Partner
+
 from .forms import WorkshopRequestForm
 from .models import Workshop
 
@@ -16,6 +18,7 @@ def workshop_list(request):
         {
             "upcoming": published.filter(starts_at__gte=now),
             "past": published.filter(starts_at__lt=now).order_by("-starts_at")[:6],
+            "partners": Partner.objects.filter(is_active=True),
         },
     )
 

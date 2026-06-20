@@ -6,33 +6,34 @@
 <section class="article-hero">
   <div class="container article-hero__inner">
     <p class="eyebrow" style="color:#9fd3bd">Présentation du projet</p>
-    <h1>Mettre des mots sur ses maux à travers l'écriture</h1>
-    <p class="meta">Un projet à la fois artistique et thérapeutique, éducatif et social,
-      qui vise à favoriser le mieux-être psychologique et l'expression de soi.</p>
+    <h1>Un projet d'éducation à l'expression des émotions</h1>
+    <p class="meta">Comme son nom l'indique, Mots sur Maux invite et guide chacun — et les
+      jeunes en particulier — à mettre des mots sur les maux qui les traversent, sur ce
+      qu'ils n'arrivent pas à exprimer.</p>
   </div>
 </section>
 
 <section class="section">
   <div class="container article-body">
-    <p class="prose-lead">Lorsque les émotions ne trouvent pas de mots, elles se transforment
-      en silence, en confusion ou en souffrance. À l'inverse, lorsqu'elles sont nommées,
-      posées ou partagées, elles peuvent devenir plus compréhensibles et parfois apaisantes.</p>
+    <p class="prose-lead">Lorsqu'on arrive à nommer une émotion difficile, à mettre des mots
+      dessus, c'est déjà un premier pas vers l'apaisement — un premier pas vers la guérison.</p>
 
-    <p>Dans un contexte où la santé mentale constitue un enjeu majeur, avec plus d'un
-      milliard de personnes à l'échelle mondiale vivant avec des troubles de santé mentale
-      (les jeunes étant particulièrement vulnérables), ce projet a pour <strong>mission</strong>
-      de favoriser le mieux-être psychologique en offrant à chacun l'occasion de
-      <strong>mettre des mots sur ses maux à travers l'écriture</strong>.</p>
+    <h2>Le constat</h2>
+    <p>Dans notre génération comme dans notre société, la santé mentale est un enjeu majeur.
+      En grande partie, la difficulté vient du fait qu'on n'arrive pas à exprimer ce qui nous
+      traverse : on refoule nos émotions, on se dit qu'elles ne sont pas valides, ou notre
+      entourage les invalide. On se convainc que « ce n'est pas assez grave » pour en parler.</p>
+    <p>Or, ne pas nommer ce qui se passe à l'intérieur de soi, faire l'aveugle sur les moments
+      difficiles, ça finit par peser lourd — et peut mener à des situations qui vont jusqu'à
+      la dépression, voire au suicide.</p>
 
-    <p>Sa <strong>vision</strong> est de contribuer à une société où l'expression émotionnelle
-      est valorisée, accessible et reconnue comme un outil pour accéder au mieux-être. Le
-      projet s'inscrit dans une approche de prévention, d'humanisation et d'éducation
+    <h2>Notre conviction</h2>
+    <p>Les émotions difficiles, les crises et les moments qu'on traverse, lorsqu'on parvient à
+      les <strong>nommer</strong>, deviennent plus compréhensibles. Mettre des mots dessus, c'est
+      la meilleure façon de comprendre ce qui nous habite — et de trouver ensuite des ressources
+      adaptées. Mots sur Maux s'inscrit dans une approche de prévention et d'éducation
       émotionnelle, <strong>sans prétendre remplacer les services de santé mentale
       professionnels</strong>.</p>
-
-    <p>Il s'appuie également sur une expérience personnelle et concrète de l'écriture comme
-      outil de bien-être et de connexion à soi, ainsi que sur des retours réels de personnes
-      ayant trouvé réconfort dans les mots.</p>
   </div>
 </section>
 
@@ -40,38 +41,54 @@
   <div class="container">
     <div class="section__head section__head--center">
       <p class="eyebrow">Deux volets complémentaires</p>
-      <h2>Le projet se structure autour de deux volets</h2>
+      <h2>Comment le projet prend forme</h2>
     </div>
     <div class="volets">
       <article class="volet">
         <div class="volet__num">01</div>
         <h3>Des ateliers en présentiel</h3>
-        <p>Organisés dans des écoles, camps d'été, organismes communautaires et autres
-          lieux partenaires, avec l'objectif d'offrir des espaces sécuritaires d'expression,
-          où les participants — principalement des enfants et des jeunes — peuvent utiliser
-          l'écriture et l'expression créative pour mieux comprendre et exprimer leurs émotions.</p>
-        <ul>
-          <li>Des exercices simples et interactifs (écriture guidée, collective).</li>
-          <li>Aucune pression de performance littéraire : l'accent est mis sur le processus.</li>
-          <li>Une approche inclusive, privilégiant l'oralité et l'accompagnement adapté.</li>
-        </ul>
+        <p>Nous allons à la rencontre des jeunes pour animer des ateliers d'écriture : des
+          exercices simples et guidés pour mettre des mots sur ce qu'ils ressentent, sans
+          pression de performance littéraire. L'accent est mis sur le processus, pas sur le
+          résultat.</p>
         <a class="btn btn--ghost btn--small" href="{% url 'workshops:list' %}">Découvrir les ateliers</a>
       </article>
       <article class="volet">
         <div class="volet__num">02</div>
         <h3>Une plateforme en ligne</h3>
-        <p>Accessible à tous, conçue comme un espace refuge et un lieu de réconfort. Cette
-          plateforme fonctionne comme un blog où sont publiés des articles abordant des
-          thématiques liées au vécu émotionnel et psychologique : anxiété, dépendance
-          affective, perte de repères, entre autres.</p>
-        <ul>
-          <li>Des soumissions anonymes pour partager une situation, une question, un malaise.</li>
-          <li>Des contenus appuyés sur des recherches et des échanges avec des professionnels.</li>
-          <li>Un langage accessible, humain et bienveillant.</li>
-        </ul>
-        <a class="btn btn--ghost btn--small" href="{% url 'submissions:submit' %}">Soumettre un texte</a>
+        <p>Un espace de lecture et de partage : des articles écrits par différentes plumes,
+          autour du vécu émotionnel (anxiété, dépendance affective, perte de repères…), et la
+          possibilité de partager, de façon anonyme, une situation ou un malaise.</p>
+        <a class="btn btn--ghost btn--small" href="{% url 'blog:article_list' %}">Lire les articles</a>
       </article>
     </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section__head">
+      <p class="eyebrow">Les fondateurs</p>
+      <h2>Pourquoi nous avons créé Mots sur Maux</h2>
+      <p class="lead">Le projet est né d'une conviction simple et d'un besoin observé autour de
+        nous : offrir un espace où il est permis de nommer ce que l'on ressent.</p>
+    </div>
+    {% if founders %}
+      <div class="founder-grid">
+        {% for f in founders %}
+          <article class="founder-card">
+            <div class="founder-card__avatar">
+              {% if f.photo %}<img src="{{ f.photo.url }}" alt="{{ f.name }}">{% else %}<span>{{ f.initials }}</span>{% endif %}
+            </div>
+            <h3>{{ f.name }}</h3>
+            {% if f.role %}<p class="eyebrow">{{ f.role }}</p>{% endif %}
+            {% if f.bio %}<p>{{ f.bio }}</p>{% endif %}
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="empty-state">La présentation des fondateurs sera ajoutée prochainement.</p>
+    {% endif %}
   </div>
 </section>
 

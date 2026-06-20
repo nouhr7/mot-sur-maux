@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 
 {% block title %}Les ateliers — {{ SITE_NAME }}{% endblock %}
-{% block meta_description %}Des ateliers d'écriture en présentiel dans des écoles, camps d'été et organismes communautaires.{% endblock %}
+{% block meta_description %}Des ateliers d'écriture en présentiel dans des écoles, camps d'été et organismes communautaires, pour mettre des mots sur les émotions.{% endblock %}
 
 {% block content %}
 <section class="article-hero">
   <div class="container article-hero__inner">
     <p class="eyebrow" style="color:#9fd3bd">Les ateliers en présentiel</p>
     <h1>Des espaces sécuritaires d'expression</h1>
-    <p class="meta">Dans des écoles, camps d'été et organismes communautaires, les participants
-      utilisent l'écriture créative pour mieux comprendre et exprimer leurs émotions —
-      sans pression de performance.</p>
+    <p class="meta">Nous allons à la rencontre des jeunes — dans des écoles, camps d'été et
+      organismes communautaires — pour animer des ateliers d'écriture guidée : des exercices
+      simples pour mettre des mots sur ce qu'on ressent, sans pression de performance.</p>
   </div>
 </section>
 
@@ -25,8 +25,13 @@
         {% include "workshops/_item.html" with w=w %}
       {% endfor %}
     {% else %}
-      <p class="empty-state">Aucun atelier programmé pour l'instant. Vous représentez une école
-        ou un organisme ? <a href="{% url 'workshops:request' %}">Demandez un atelier</a>.</p>
+      <div class="volet" style="box-shadow:none">
+        <h3>Les premiers ateliers arrivent</h3>
+        <p>Le projet est jeune : aucun atelier n'a encore eu lieu — c'est le cœur de notre
+          vision pour les prochains mois. Vous représentez une école, un camp ou un
+          organisme&nbsp;? Accueillons ensemble le tout premier.</p>
+        <a class="btn btn--primary btn--small" href="{% url 'workshops:request' %}">Proposer un atelier</a>
+      </div>
     {% endif %}
 
     {% if past %}
@@ -41,14 +46,50 @@
   </div>
 </section>
 
+<section class="section section--tint">
+  <div class="container">
+    <div class="section__head section__head--center">
+      <p class="eyebrow">Prendre rendez-vous</p>
+      <h2>Organiser un atelier dans votre milieu</h2>
+      <p class="lead">Le projet adopte une approche inclusive, qui privilégie l'oralité et
+        l'accompagnement adapté. Contactez-nous pour fixer une date.</p>
+    </div>
+    <div class="contact-cards">
+      <div class="contact-card">
+        <p class="eyebrow">Formulaire</p>
+        <h3>Demande d'atelier</h3>
+        <p>Dites-nous votre milieu et vos besoins ; nous proposons une date.</p>
+        <a class="btn btn--primary btn--small" href="{% url 'workshops:request' %}">Remplir le formulaire</a>
+      </div>
+      <div class="contact-card">
+        <p class="eyebrow">Écrire / appeler</p>
+        <h3>Nous joindre</h3>
+        {% if CONTACT_EMAIL %}<p>✉️ <a href="mailto:{{ CONTACT_EMAIL }}">{{ CONTACT_EMAIL }}</a></p>{% endif %}
+        {% if CONTACT_PHONE %}<p>📞 <a href="tel:{{ CONTACT_PHONE|cut:' ' }}">{{ CONTACT_PHONE }}</a></p>{% endif %}
+        <a class="btn btn--ghost btn--small" href="{% url 'core:contact' %}">Page contact</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="section">
   <div class="container">
-    <div class="cta-band">
-      <h2>Accueillez un atelier dans votre milieu</h2>
-      <p>Le projet adopte une approche inclusive, qui tient compte des participants ayant un
-        accès limité à l'éducation formelle, en privilégiant l'oralité et l'accompagnement adapté.</p>
-      <p class="mt-2"><a class="btn btn--light" href="{% url 'workshops:request' %}">Demander un atelier</a></p>
+    <div class="section__head section__head--center">
+      <p class="eyebrow">Nos partenaires</p>
+      <h2>Ils rendent les ateliers possibles</h2>
     </div>
+    {% if partners %}
+      <div class="partner-strip">
+        {% for p in partners %}
+          {% if p.url %}<a href="{{ p.url }}" class="partner">{% else %}<span class="partner">{% endif %}
+            {% if p.logo %}<img src="{{ p.logo.url }}" alt="{{ p.name }}">{% else %}{{ p.name }}{% endif %}
+          {% if p.url %}</a>{% else %}</span>{% endif %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="empty-state text-center">Vous aimeriez devenir partenaire&nbsp;?
+        <a href="{% url 'core:contact' %}">Parlons-en</a>.</p>
+    {% endif %}
   </div>
 </section>
 {% endblock %}
