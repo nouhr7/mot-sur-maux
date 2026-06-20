@@ -1,0 +1,7 @@
+{# Renders a single bound form field with label, help text and errors. #}
+<div class="form-field{% if field.errors %} has-error{% endif %}">
+  {{ field.label_tag }}
+  {{ field }}
+  {% if field.help_text %}<span class="helptext">{{ field.help_text }}</span>{% endif %}
+  {% if field.errors %}<div class="form-errors">{{ field.errors|striptags }}</div>{% endif %}
+</div>

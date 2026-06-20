@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}{{ article.title }} — {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}{{ article.excerpt }}{% endblock %}
+
+{% block content %}
+<section class="article-hero">
+  <div class="container article-hero__inner">
+    <a href="{{ article.category.get_absolute_url }}"><span class="chip" style="background: {{ article.category.color }}">{{ article.category.name }}</span></a>
+    <h1>{{ article.title }}</h1>
+    <p class="meta">Par {{ article.author_name }} · {{ article.published_at|date:"j F Y" }} · {{ article.reading_minutes }} min de lecture</p>
+  </div>
+</section>
+
+<article class="container article-body">
+  {% if article.cover_image %}
+    <figure class="article-body__cover">
+      <img src="{{ article.cover_image.url }}" alt="{{ article.title }}">
+      {% if article.cover_credit %}<figcaption class="credit">{{ article.cover_credit }}</figcaption>{% endif %}
+    </figure>
+  {% endif %}
+
+  <p class="prose-lead">{{ article.excerpt }}</p>
+
+  {% for paragraph in article.paragraphs %}
+    <p>{{ paragraph }}</p>
+  {% endfor %}
+
+  {% if article.source_submission %}
+    <p class="credit">Cet article s'inspire d'une soumission anonyme reçue sur la plateforme.</p>
+  {% endif %}
+</article>
+
+{% if related %}
+<section class="section section--tint">
+  <div class="container">
+    <div class="section__head">
+      <p class="eyebrow">À lire aussi</p>
+      <h2>Dans la même thématique</h2>
+    </div>
+    <div class="card-grid">
+      {% for article in related %}
+        {% include "blog/_article_card.html" with article=article %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="section">
+  <div class="container">
+    <div class="cta-band">
+      <h2>Vous vous reconnaissez dans ces mots ?</h2>
+      <p>Partagez ce que vous vivez, de façon anonyme. Vous n'êtes pas seul.</p>
+      <p class="mt-2"><a class="btn btn--light" href="{% url 'submissions:submit' %}">Soumettre un texte</a></p>
+    </div>
+  </div>
+</section>
+{% endblock %}

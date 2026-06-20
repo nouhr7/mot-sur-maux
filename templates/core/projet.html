@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Le projet — {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<section class="article-hero">
+  <div class="container article-hero__inner">
+    <p class="eyebrow" style="color:#9fd3bd">Présentation du projet</p>
+    <h1>Mettre des mots sur ses maux à travers l'écriture</h1>
+    <p class="meta">Un projet à la fois artistique et thérapeutique, éducatif et social,
+      qui vise à favoriser le mieux-être psychologique et l'expression de soi.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container article-body">
+    <p class="prose-lead">Lorsque les émotions ne trouvent pas de mots, elles se transforment
+      en silence, en confusion ou en souffrance. À l'inverse, lorsqu'elles sont nommées,
+      posées ou partagées, elles peuvent devenir plus compréhensibles et parfois apaisantes.</p>
+
+    <p>Dans un contexte où la santé mentale constitue un enjeu majeur, avec plus d'un
+      milliard de personnes à l'échelle mondiale vivant avec des troubles de santé mentale
+      (les jeunes étant particulièrement vulnérables), ce projet a pour <strong>mission</strong>
+      de favoriser le mieux-être psychologique en offrant à chacun l'occasion de
+      <strong>mettre des mots sur ses maux à travers l'écriture</strong>.</p>
+
+    <p>Sa <strong>vision</strong> est de contribuer à une société où l'expression émotionnelle
+      est valorisée, accessible et reconnue comme un outil pour accéder au mieux-être. Le
+      projet s'inscrit dans une approche de prévention, d'humanisation et d'éducation
+      émotionnelle, <strong>sans prétendre remplacer les services de santé mentale
+      professionnels</strong>.</p>
+
+    <p>Il s'appuie également sur une expérience personnelle et concrète de l'écriture comme
+      outil de bien-être et de connexion à soi, ainsi que sur des retours réels de personnes
+      ayant trouvé réconfort dans les mots.</p>
+  </div>
+</section>
+
+<section class="section section--tint">
+  <div class="container">
+    <div class="section__head section__head--center">
+      <p class="eyebrow">Deux volets complémentaires</p>
+      <h2>Le projet se structure autour de deux volets</h2>
+    </div>
+    <div class="volets">
+      <article class="volet">
+        <div class="volet__num">01</div>
+        <h3>Des ateliers en présentiel</h3>
+        <p>Organisés dans des écoles, camps d'été, organismes communautaires et autres
+          lieux partenaires, avec l'objectif d'offrir des espaces sécuritaires d'expression,
+          où les participants — principalement des enfants et des jeunes — peuvent utiliser
+          l'écriture et l'expression créative pour mieux comprendre et exprimer leurs émotions.</p>
+        <ul>
+          <li>Des exercices simples et interactifs (écriture guidée, collective).</li>
+          <li>Aucune pression de performance littéraire : l'accent est mis sur le processus.</li>
+          <li>Une approche inclusive, privilégiant l'oralité et l'accompagnement adapté.</li>
+        </ul>
+        <a class="btn btn--ghost btn--small" href="{% url 'workshops:list' %}">Découvrir les ateliers</a>
+      </article>
+      <article class="volet">
+        <div class="volet__num">02</div>
+        <h3>Une plateforme en ligne</h3>
+        <p>Accessible à tous, conçue comme un espace refuge et un lieu de réconfort. Cette
+          plateforme fonctionne comme un blog où sont publiés des articles abordant des
+          thématiques liées au vécu émotionnel et psychologique : anxiété, dépendance
+          affective, perte de repères, entre autres.</p>
+        <ul>
+          <li>Des soumissions anonymes pour partager une situation, une question, un malaise.</li>
+          <li>Des contenus appuyés sur des recherches et des échanges avec des professionnels.</li>
+          <li>Un langage accessible, humain et bienveillant.</li>
+        </ul>
+        <a class="btn btn--ghost btn--small" href="{% url 'submissions:submit' %}">Soumettre un texte</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="cta-band">
+      <h2>Envie de collaborer ou d'accueillir un atelier ?</h2>
+      <p>Écoles, camps, organismes : écrivez-nous pour imaginer un atelier adapté à votre milieu.</p>
+      <p class="mt-2">
+        <a class="btn btn--light" href="{% url 'workshops:request' %}">Demander un atelier</a>
+        <a class="btn btn--ghost btn--light" href="{% url 'core:contact' %}">Nous contacter</a>
+      </p>
+    </div>
+  </div>
+</section>
+{% endblock %}

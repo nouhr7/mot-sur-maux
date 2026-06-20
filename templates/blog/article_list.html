@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Articles — {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}Des articles sur le vécu émotionnel et psychologique : anxiété, dépendance affective, perte de repères, et plus encore.{% endblock %}
+
+{% block content %}
+<section class="article-hero">
+  <div class="container article-hero__inner">
+    <p class="eyebrow" style="color:#9fd3bd">La plateforme en ligne</p>
+    <h1>Des mots pour se sentir compris, reconnu et moins seul</h1>
+    <p class="meta">Un espace refuge et un lieu de réconfort. Des contenus appuyés sur des
+      recherches et des échanges avec des professionnels de la santé mentale.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <nav class="filter-bar" aria-label="Filtrer par thématique">
+      <a href="{% url 'blog:article_list' %}" class="{% if not active_category %}is-active{% endif %}">Tout</a>
+      {% for category in categories %}
+        <a href="{{ category.get_absolute_url }}" class="{% if active_category == category %}is-active{% endif %}">{{ category.name }}</a>
+      {% endfor %}
+    </nav>
+
+    {% if featured %}
+      {% include "blog/_featured.html" with article=featured %}
+    {% endif %}
+
+    {% if page_obj %}
+      <div class="card-grid mt-2">
+        {% for article in page_obj %}
+          {% include "blog/_article_card.html" with article=article %}
+        {% endfor %}
+      </div>
+      {% include "blog/_pagination.html" %}
+    {% elif not featured %}
+      <p class="empty-state">Aucun article pour le moment. Revenez bientôt — les premiers mots
+        arrivent.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

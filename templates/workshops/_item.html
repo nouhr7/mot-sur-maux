@@ -1,0 +1,17 @@
+<article class="workshop-item">
+  <div class="workshop-item__date">
+    <div class="day">{{ w.starts_at|date:"j" }}</div>
+    <div class="month">{{ w.starts_at|date:"M" }}</div>
+  </div>
+  <div>
+    <span class="tag">{{ w.get_host_type_display }}</span>
+    <h3 style="margin:.4rem 0 .2rem"><a href="{{ w.get_absolute_url }}">{{ w.title }}</a></h3>
+    <p style="margin:0; color: var(--muted)">
+      {% if w.location_name %}{{ w.location_name }}{% endif %}{% if w.city %}, {{ w.city }}{% endif %}
+      · {{ w.starts_at|date:"l j F, G\hi" }}
+    </p>
+  </div>
+  <div class="workshop-item__cta">
+    <a class="btn btn--ghost btn--small" href="{{ w.get_absolute_url }}">Détails</a>
+  </div>
+</article>

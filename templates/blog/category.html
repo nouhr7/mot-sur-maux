@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}{{ category.name }} — {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}{{ category.description }}{% endblock %}
+
+{% block content %}
+<section class="article-hero">
+  <div class="container article-hero__inner">
+    <p class="eyebrow" style="color:#9fd3bd">Thématique</p>
+    <h1>{{ category.name }}</h1>
+    {% if category.description %}<p class="meta">{{ category.description }}</p>{% endif %}
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <nav class="filter-bar" aria-label="Filtrer par thématique">
+      <a href="{% url 'blog:article_list' %}">Tout</a>
+      {% for c in categories %}
+        <a href="{{ c.get_absolute_url }}" class="{% if active_category == c %}is-active{% endif %}">{{ c.name }}</a>
+      {% endfor %}
+    </nav>
+
+    {% if page_obj %}
+      <div class="card-grid">
+        {% for article in page_obj %}
+          {% include "blog/_article_card.html" with article=article %}
+        {% endfor %}
+      </div>
+      {% include "blog/_pagination.html" %}
+    {% else %}
+      <p class="empty-state">Aucun article dans cette thématique pour l'instant.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% load static %}
+<article class="article-card">
+  <a class="article-card__media" href="{{ article.get_absolute_url }}">
+    {% if article.cover_image %}
+      <img src="{{ article.cover_image.url }}" alt="{{ article.title }}" loading="lazy">
+    {% endif %}
+  </a>
+  <div class="article-card__body">
+    <span class="chip" style="background: {{ article.category.color }}">{{ article.category.name }}</span>
+    <h3 class="article-card__title"><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h3>
+    <p class="article-card__excerpt">{{ article.excerpt }}</p>
+    <div class="article-card__meta">
+      <span>{{ article.published_at|date:"j F Y" }}</span>
+      <span>·</span>
+      <span>{{ article.reading_minutes }} min de lecture</span>
+    </div>
+  </div>
+</article>

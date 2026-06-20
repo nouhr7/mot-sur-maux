@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Demander un atelier — {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<section class="article-hero">
+  <div class="container article-hero__inner">
+    <p class="eyebrow" style="color:#9fd3bd">Écoles · camps · organismes</p>
+    <h1>Demander un atelier</h1>
+    <p class="meta">Dites-nous en quelques mots votre milieu et vos besoins. Nous imaginerons
+      ensemble un atelier d'écriture adapté à votre groupe.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <form class="form-card" method="post" novalidate>
+      {% csrf_token %}
+      {{ form.website }}
+      {% include "partials/_field.html" with field=form.organization_name %}
+      {% include "partials/_field.html" with field=form.host_type %}
+      {% include "partials/_field.html" with field=form.contact_name %}
+      {% include "partials/_field.html" with field=form.email %}
+      {% include "partials/_field.html" with field=form.phone %}
+      {% include "partials/_field.html" with field=form.city %}
+      {% include "partials/_field.html" with field=form.audience %}
+      {% include "partials/_field.html" with field=form.preferred_dates %}
+      {% include "partials/_field.html" with field=form.message %}
+      <button class="btn btn--primary" type="submit">Envoyer ma demande</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

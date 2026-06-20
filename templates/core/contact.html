@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Contact — {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<section class="article-hero">
+  <div class="container article-hero__inner">
+    <p class="eyebrow" style="color:#9fd3bd">Contact</p>
+    <h1>Écrivons-nous</h1>
+    <p class="meta">Une question, une idée de collaboration, un mot à partager ? Nous serons
+      heureux de vous lire.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <form class="form-card" method="post" novalidate>
+      {% csrf_token %}
+      {{ form.website }}
+      {% include "partials/_field.html" with field=form.name %}
+      {% include "partials/_field.html" with field=form.email %}
+      {% include "partials/_field.html" with field=form.subject %}
+      {% include "partials/_field.html" with field=form.message %}
+      <button class="btn btn--primary" type="submit">Envoyer le message</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

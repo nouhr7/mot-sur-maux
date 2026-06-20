@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Merci — {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container" style="max-width:720px; text-align:center; padding-top:4rem;">
+    <p class="eyebrow">Bien reçu</p>
+    <h1>Merci d'avoir mis des mots sur ce que vous vivez</h1>
+    <p class="lead">Votre message a bien été reçu, en toute confidentialité. Prenez soin de
+      vous — et rappelez-vous que vous n'êtes pas seul.</p>
+    <p class="crisis" style="color: var(--green-800); border-left:3px solid var(--green-600); padding-left:1rem; max-width:46ch; margin:1.5rem auto; text-align:left;">
+      {{ CRISIS_NOTE }}</p>
+    <p class="mt-2">
+      <a class="btn btn--primary" href="{% url 'blog:article_list' %}">Lire des articles</a>
+      <a class="btn btn--ghost" href="{% url 'core:home' %}">Retour à l'accueil</a>
+    </p>
+  </div>
+</section>
+{% endblock %}

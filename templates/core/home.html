@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+  <div class="container hero__inner">
+    <div>
+      <p class="eyebrow">Projet artistique · thérapeutique · éducatif · social</p>
+      <h1>Mettre des mots sur ses maux, à travers l'écriture.</h1>
+      <p class="lead">Mots sur Maux favorise le mieux-être psychologique et l'expression
+        de soi. Parce que lorsque les émotions trouvent des mots, elles deviennent plus
+        compréhensibles et parfois apaisantes.</p>
+      <div class="hero__actions">
+        <a class="btn btn--light" href="{% url 'submissions:submit' %}">Soumettre un texte anonyme</a>
+        <a class="btn btn--ghost btn--light" href="{% url 'blog:article_list' %}">Lire les articles</a>
+      </div>
+    </div>
+    <div class="hero__card">
+      <p class="eyebrow">Notre conviction</p>
+      <blockquote>« Lorsque les émotions ne trouvent pas de mots, elles se transforment
+        en silence, en confusion ou en souffrance. »</blockquote>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section__head">
+      <p class="eyebrow">Le projet</p>
+      <h2>Un espace pour nommer, poser et partager ce que l'on ressent</h2>
+      <p class="lead">Dans un contexte où la santé mentale constitue un enjeu majeur — plus
+        d'un milliard de personnes vivent avec des troubles de santé mentale, les jeunes
+        étant particulièrement vulnérables — Mots sur Maux offre à chacun l'occasion de
+        mettre des mots sur ses maux.</p>
+      <p><a class="btn btn--ghost" href="{% url 'core:projet' %}">Découvrir le projet</a></p>
+    </div>
+
+    <div class="volets">
+      <article class="volet">
+        <div class="volet__num">01</div>
+        <h3>Des ateliers en présentiel</h3>
+        <p>Dans des écoles, camps d'été et organismes communautaires, nous offrons des
+          espaces sécuritaires d'expression où les jeunes utilisent l'écriture créative
+          pour mieux comprendre et exprimer leurs émotions.</p>
+        <a class="btn btn--ghost btn--small" href="{% url 'workshops:list' %}">Voir les ateliers</a>
+      </article>
+      <article class="volet">
+        <div class="volet__num">02</div>
+        <h3>Une plateforme en ligne</h3>
+        <p>Un espace refuge et un lieu de réconfort : des articles sur le vécu émotionnel
+          (anxiété, dépendance affective, perte de repères) et la possibilité de partager,
+          de façon anonyme, une situation, une question ou un malaise.</p>
+        <a class="btn btn--ghost btn--small" href="{% url 'blog:article_list' %}">Explorer la plateforme</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+{% if featured %}
+<section class="section section--tint">
+  <div class="container">
+    <div class="section__head">
+      <p class="eyebrow">À la une</p>
+      <h2>Des mots pour se sentir compris, reconnu et moins seul</h2>
+    </div>
+    {% include "blog/_featured.html" with article=featured %}
+
+    {% if recent %}
+    <div class="card-grid mt-2">
+      {% for article in recent %}
+        {% include "blog/_article_card.html" with article=article %}
+      {% endfor %}
+    </div>
+    <p class="text-center mt-2"><a class="btn btn--primary" href="{% url 'blog:article_list' %}">Tous les articles</a></p>
+    {% endif %}
+  </div>
+</section>
+{% endif %}
+
+{% if upcoming %}
+<section class="section">
+  <div class="container">
+    <div class="section__head">
+      <p class="eyebrow">Prochains ateliers</p>
+      <h2>Venez écrire avec nous</h2>
+    </div>
+    {% for w in upcoming %}
+      {% include "workshops/_item.html" with w=w %}
+    {% endfor %}
+    <p class="mt-2"><a class="btn btn--ghost" href="{% url 'workshops:list' %}">Tous les ateliers</a></p>
+  </div>
+</section>
+{% endif %}
+
+<section class="section">
+  <div class="container">
+    <div class="cta-band">
+      <p class="eyebrow" style="color:#9fd3bd">Soumissions anonymes</p>
+      <h2>Vous portez quelque chose que vous n'arrivez pas à dire ?</h2>
+      <p>Partagez-le ici, en toute confidentialité. À partir des soumissions reçues, nous
+        rédigeons des contenus bienveillants, appuyés sur des recherches et des échanges
+        avec des professionnels de la santé mentale.</p>
+      <p class="mt-2"><a class="btn btn--light" href="{% url 'submissions:submit' %}">Mettre des mots sur mes maux</a></p>
+    </div>
+  </div>
+</section>
+{% endblock %}

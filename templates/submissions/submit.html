@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Soumettre un texte anonyme — {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<section class="article-hero">
+  <div class="container article-hero__inner">
+    <p class="eyebrow" style="color:#9fd3bd">Soumission anonyme</p>
+    <h1>Mettez des mots sur vos maux</h1>
+    <p class="meta">Partagez une situation, une question ou un malaise. Vous restez anonyme.
+      Il n'y a pas de bonne ou de mauvaise façon de l'écrire.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <form class="form-card" method="post" novalidate>
+      {% csrf_token %}
+      {{ form.website }}
+      {% include "partials/_field.html" with field=form.topic %}
+      {% include "partials/_field.html" with field=form.feeling %}
+      {% include "partials/_field.html" with field=form.message %}
+      {% include "partials/_field.html" with field=form.contact_email %}
+      <p class="helptext">Vos mots sont reçus en toute confidentialité. Certains pourront
+        inspirer, de façon anonyme, des contenus bienveillants publiés sur la plateforme.</p>
+      <button class="btn btn--primary mt-2" type="submit">Envoyer en toute confidentialité</button>
+    </form>
+  </div>
+</section>
+{% endblock %}
