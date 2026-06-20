@@ -18,14 +18,16 @@
   <header class="site-header">
     <div class="container site-header__inner">
       <a class="brand" href="{% url 'core:home' %}">
-        {# Logo « M » provisoire. Pour utiliser votre propre logo, déposez-le dans
-           static/img/ et remplacez tout ce bloc <a> par :
+        {# Logo « plume » (vectoriel). Pour utiliser votre propre logo, déposez-le
+           dans static/img/ et remplacez tout ce bloc <a> par :
            <a class="brand" href="{% url 'core:home' %}">
              <img class="brand__logo" src="{% static 'img/logo.svg' %}" alt="Mots sur Maux">
            </a> #}
         <span class="brand__mark" aria-hidden="true">
           <svg viewBox="0 0 48 48" width="22" height="22" focusable="false">
-            <path d="M12 34 V14 H16.8 L24 24.4 L31.2 14 H36 V34 H31.4 V21.2 L24 31.6 L16.6 21.2 V34 Z" fill="currentColor"/>
+            <path d="M24 8 L34 26 L24 44 L14 26 Z" fill="currentColor"/>
+            <line x1="24" y1="18" x2="24" y2="40" stroke="#14463b" stroke-width="2.4"/>
+            <circle cx="24" cy="22" r="2.2" fill="#14463b"/>
           </svg>
         </span>
         <span class="brand__text">
