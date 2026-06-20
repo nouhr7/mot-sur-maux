@@ -23,7 +23,7 @@ class ContactMessage(models.Model):
 class Founder(models.Model):
     """A founder / core team member presented on the project page."""
 
-    name = models.CharField("Nom", max_length=120)
+    name = models.CharField("Nom", max_length=120, blank=True)
     role = models.CharField("Rôle", max_length=120, blank=True)
     bio = models.TextField("Présentation", blank=True)
     photo = models.ImageField("Photo", upload_to="founders/", blank=True, null=True)
@@ -36,7 +36,7 @@ class Founder(models.Model):
         ordering = ["order", "name"]
 
     def __str__(self):
-        return self.name
+        return self.name or f"Fondateur·rice #{self.pk or '?'}"
 
     @property
     def initials(self):

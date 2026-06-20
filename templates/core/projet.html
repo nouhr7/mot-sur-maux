@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static core_extras %}
 
 {% block title %}Le projet — {{ SITE_NAME }}{% endblock %}
 
@@ -74,20 +75,39 @@
         nous : offrir un espace où il est permis de nommer ce que l'on ressent.</p>
     </div>
     {% if founders %}
+      {# Profils renseignés dans l'admin : nom, rôle, bio, photo. #}
       <div class="founder-grid">
         {% for f in founders %}
           <article class="founder-card">
-            <div class="founder-card__avatar">
-              {% if f.photo %}<img src="{{ f.photo.url }}" alt="{{ f.name }}">{% else %}<span>{{ f.initials }}</span>{% endif %}
+            <div class="founder-portrait">
+              {% if f.photo %}<img src="{{ f.photo.url }}" alt="{{ f.name }}">
+              {% else %}<svg class="silhouette" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" fill="none" stroke-width="2"/></svg>{% endif %}
             </div>
-            <h3>{{ f.name }}</h3>
+            {% if f.name %}<h3>{{ f.name }}</h3>{% endif %}
             {% if f.role %}<p class="eyebrow">{{ f.role }}</p>{% endif %}
-            {% if f.bio %}<p>{{ f.bio }}</p>{% endif %}
+            <p>{% if f.bio %}{{ f.bio }}{% else %}<span class="muted-note">Présentation à venir.</span>{% endif %}</p>
           </article>
         {% endfor %}
       </div>
     {% else %}
-      <p class="empty-state">La présentation des fondateurs sera ajoutée prochainement.</p>
+      {# Aucun profil dans l'admin : on affiche les 3 portraits déposés dans
+         static/img/founders/ (founder-1.jpg, founder-2.jpg, founder-3.jpg),
+         sinon une silhouette en attendant. #}
+      <div class="founder-grid">
+        {% for i in "123" %}
+          {% with path="img/founders/founder-"|add:i|add:".jpg" %}
+            {% static_if_exists path as fp %}
+            <article class="founder-card">
+              <div class="founder-portrait">
+                {% if fp %}<img src="{{ fp }}" alt="Membre de l'équipe fondatrice">
+                {% else %}<svg class="silhouette" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" fill="none" stroke-width="2"/></svg>{% endif %}
+              </div>
+              <p class="eyebrow">Cofondateur·rice</p>
+              <p><span class="muted-note">Présentation à venir.</span></p>
+            </article>
+          {% endwith %}
+        {% endfor %}
+      </div>
     {% endif %}
   </div>
 </section>

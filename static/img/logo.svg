@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 72" role="img" aria-label="Mots sur Maux">
+  <!-- Logo placeholder pour Mots sur Maux — remplaçable à tout moment. -->
+  <rect x="4" y="12" width="48" height="48" rx="14" fill="#14463b"/>
+  <path d="M16 46 V26 H20.8 L28 36.4 L35.2 26 H40 V46 H35.4 V33.2 L28 43.6 L20.6 33.2 V46 Z" fill="#f7f3e9"/>
+  <text x="68" y="40" font-family="'Cormorant Garamond', Georgia, serif" font-size="31" font-weight="600" fill="#0f3a2f">Mots<tspan font-style="italic" font-weight="500" fill="#2e7d5b"> sur </tspan>Maux</text>
+  <text x="69" y="57" font-family="'Mulish', system-ui, sans-serif" font-size="9.5" letter-spacing="1.6" fill="#5d6b63">EXPRESSION DES ÉMOTIONS</text>
+</svg>
