@@ -1,0 +1,19 @@
+{% extends "accounts/base_account.html" %}
+
+{% block title %}Mes favoris — {{ SITE_NAME }}{% endblock %}
+{% block account_title %}Mes favoris{% endblock %}
+
+{% block account_body %}
+<p class="lead">Les articles que vous avez gardés pour les relire.</p>
+
+{% if bookmarks %}
+  <div class="card-grid">
+    {% for bookmark in bookmarks %}
+      {% include "blog/_article_card.html" with article=bookmark.article %}
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="empty-state">Aucun favori pour l'instant. En lisant un article,
+    cliquez sur « ☆ Enregistrer dans mes favoris » pour le retrouver ici.</p>
+{% endif %}
+{% endblock %}

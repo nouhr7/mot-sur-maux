@@ -3,10 +3,12 @@ from django.contrib import messages
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import resolve_url
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.html import escape
 
+from accounts.services import process_profile_forms
 from blog.models import Article
 from submissions.models import Submission
 from workshops.models import Workshop, WorkshopRequest
@@ -33,6 +35,10 @@ class TeamLoginView(auth_views.LoginView):
     template_name = "team/login.html"
     redirect_authenticated_user = True
     authentication_form = TeamLoginForm
+
+    def get_default_redirect_url(self):
+        # Land on the team dashboard, not the member space.
+        return resolve_url("team:dashboard")
 
 
 # ---------------------------------------------------------------------------
@@ -288,5 +294,28 @@ def request_list(request):
             "active": "demandes",
             "requests": WorkshopRequest.objects.all(),
             "status_choices": WorkshopRequest.Status.choices,
+        },
+    )
+
+
+# ---------------------------------------------------------------------------
+# Mon profil (photo + mot de passe)
+# ---------------------------------------------------------------------------
+@team_member_required
+def profile(request):
+    profile_form, password_form, done = process_profile_forms(request)
+    if done == "profile":
+        messages.success(request, "Profil mis à jour.")
+        return redirect("team:profile")
+    if done == "password":
+        messages.success(request, "Mot de passe modifié.")
+        return redirect("team:profile")
+    return render(
+        request,
+        "team/profile.html",
+        {
+            "active": "profil",
+            "profile_form": profile_form,
+            "password_form": password_form,
         },
     )

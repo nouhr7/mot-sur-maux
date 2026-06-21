@@ -9,6 +9,15 @@
     <a href="{{ article.category.get_absolute_url }}"><span class="chip" style="background: {{ article.category.color }}">{{ article.category.name }}</span></a>
     <h1>{{ article.title }}</h1>
     <p class="meta">Par <a class="meta-link" href="{{ article.author.get_absolute_url }}">{{ article.author.name }}</a> · {{ article.published_at|date:"j F Y" }} · {{ article.reading_minutes }} min de lecture</p>
+    {% if user.is_authenticated %}
+      <form class="bookmark-form" method="post" action="{% url 'accounts:bookmark_toggle' article.id %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+        <button class="btn btn--small btn--light" type="submit">
+          {% if is_bookmarked %}★ Retirer de mes favoris{% else %}☆ Enregistrer dans mes favoris{% endif %}
+        </button>
+      </form>
+    {% endif %}
   </div>
 </section>
 

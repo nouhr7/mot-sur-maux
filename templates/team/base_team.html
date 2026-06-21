@@ -51,13 +51,22 @@
         <a href="{% url 'team:request_list' %}" class="{% if active == 'demandes' %}is-active{% endif %}">
           <span class="team-nav__icon">☎</span> Demandes d'atelier
         </a>
+        <a href="{% url 'team:profile' %}" class="{% if active == 'profil' %}is-active{% endif %}">
+          <span class="team-nav__icon">☺</span> Mon profil
+        </a>
       </nav>
 
       <div class="team-sidebar__foot">
         <a class="team-sidebar__site" href="{% url 'core:home' %}" target="_blank" rel="noopener">↗ Voir le site</a>
         <div class="team-user">
-          <span class="team-user__avatar">{{ user.first_name|default:user.username|make_list|first|upper }}</span>
-          <span class="team-user__name">{{ user.first_name|default:user.username }}</span>
+          <a class="team-user__avatar" href="{% url 'team:profile' %}">
+            {% if user.profile.avatar %}
+              <img src="{{ user.profile.avatar.url }}" alt="">
+            {% else %}
+              {{ user.first_name|default:user.username|make_list|first|upper }}
+            {% endif %}
+          </a>
+          <a class="team-user__name" href="{% url 'team:profile' %}">{{ user.first_name|default:user.username }}</a>
           <form method="post" action="{% url 'team:logout' %}">
             {% csrf_token %}
             <button type="submit" class="team-user__logout">Se déconnecter</button>

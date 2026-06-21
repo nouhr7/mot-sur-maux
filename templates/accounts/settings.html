@@ -1,0 +1,13 @@
+{% extends "accounts/base_account.html" %}
+
+{% block title %}Paramètres — {{ SITE_NAME }}{% endblock %}
+{% block account_title %}Paramètres{% endblock %}
+
+{% block account_body %}
+{% include "accounts/_profile_forms.html" %}
+
+<form method="post" action="{% url 'accounts:logout' %}" class="mt-2">
+  {% csrf_token %}
+  <button class="btn btn--ghost" type="submit">Se déconnecter</button>
+</form>
+{% endblock %}

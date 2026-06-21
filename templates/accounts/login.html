@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Se connecter — {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<section class="article-hero">
+  <div class="container article-hero__inner">
+    <p class="eyebrow" style="color:#9fd3bd">Mon espace</p>
+    <h1>Se connecter</h1>
+    <p class="meta">Retrouvez votre journal, vos favoris et votre historique.
+      Un compte n'est jamais obligatoire pour lire ou soumettre un texte.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <form class="form-card" method="post" novalidate>
+      {% csrf_token %}
+      {% if form.non_field_errors %}
+        <div class="alert alert--error">{{ form.non_field_errors|striptags }}</div>
+      {% endif %}
+      <div class="form-field">
+        <label for="{{ form.username.id_for_label }}">Identifiant</label>
+        {{ form.username }}
+      </div>
+      <div class="form-field">
+        <label for="{{ form.password.id_for_label }}">Mot de passe</label>
+        {{ form.password }}
+      </div>
+      <input type="hidden" name="next" value="{{ next }}">
+      <button class="btn btn--primary mt-2" type="submit">Se connecter</button>
+      <p class="helptext" style="margin-top:1rem">Pas encore de compte ?
+        <a href="{% url 'accounts:signup' %}">Créer un compte gratuitement</a>.</p>
+    </form>
+  </div>
+</section>
+{% endblock %}

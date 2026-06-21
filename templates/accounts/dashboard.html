@@ -1,0 +1,49 @@
+{% extends "accounts/base_account.html" %}
+
+{% block title %}Mon espace — {{ SITE_NAME }}{% endblock %}
+{% block account_title %}Bonjour {{ user.first_name|default:user.username }}{% endblock %}
+
+{% block account_action %}
+  <a class="btn btn--primary" href="{% url 'accounts:journal_create' %}">✎ Écrire dans mon journal</a>
+{% endblock %}
+
+{% block account_body %}
+<div class="account-grid">
+  <a class="account-stat" href="{% url 'accounts:journal_list' %}">
+    <span class="account-stat__num">{{ entry_count }}</span>
+    <span class="account-stat__label">Textes dans mon journal</span>
+  </a>
+  <a class="account-stat" href="{% url 'accounts:bookmark_list' %}">
+    <span class="account-stat__num">{{ bookmark_count }}</span>
+    <span class="account-stat__label">Articles en favori</span>
+  </a>
+  <a class="account-stat" href="{% url 'accounts:read_list' %}">
+    <span class="account-stat__num">{{ read_count }}</span>
+    <span class="account-stat__label">Articles lus</span>
+  </a>
+  <a class="account-stat" href="{% url 'accounts:submission_list' %}">
+    <span class="account-stat__num">{{ submission_count }}</span>
+    <span class="account-stat__label">Textes soumis</span>
+  </a>
+</div>
+
+<div class="account-card">
+  <div class="account-card__head">
+    <h2>Mon journal</h2>
+    <a href="{% url 'accounts:journal_list' %}">Tout voir →</a>
+  </div>
+  {% for entry in recent_entries %}
+    <a class="account-row" href="{% url 'accounts:journal_edit' entry.pk %}">
+      <span>
+        <strong>{{ entry.display_title }}</strong>
+        <small>Modifié le {{ entry.updated_at|date:"j F Y" }}</small>
+      </span>
+      <span class="account-row__excerpt">{{ entry.content|truncatewords:14 }}</span>
+    </a>
+  {% empty %}
+    <p class="empty-state">Votre journal est encore vierge.
+      <a href="{% url 'accounts:journal_create' %}">Posez vos premiers mots</a> —
+      ils resteront privés.</p>
+  {% endfor %}
+</div>
+{% endblock %}

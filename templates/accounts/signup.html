@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Créer un compte — {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<section class="article-hero">
+  <div class="container article-hero__inner">
+    <p class="eyebrow" style="color:#9fd3bd">Mon espace</p>
+    <h1>Créer un compte</h1>
+    <p class="meta">Un espace bien à vous : un journal privé pour écrire à votre
+      rythme, vos articles favoris et votre historique. Gratuit, et facultatif.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <form class="form-card" method="post" novalidate>
+      {% csrf_token %}
+      {% if form.non_field_errors %}
+        <div class="alert alert--error">{{ form.non_field_errors|striptags }}</div>
+      {% endif %}
+      {% for field in form %}
+        {% include "partials/_field.html" with field=field %}
+      {% endfor %}
+      <button class="btn btn--primary mt-2" type="submit">Créer mon compte</button>
+      <p class="helptext" style="margin-top:1rem">Déjà inscrit·e ?
+        <a href="{% url 'accounts:login' %}">Se connecter</a>.</p>
+    </form>
+  </div>
+</section>
+{% endblock %}

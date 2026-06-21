@@ -1,0 +1,28 @@
+{% extends "accounts/base_account.html" %}
+
+{% block title %}Mes soumissions — {{ SITE_NAME }}{% endblock %}
+{% block account_title %}Mes soumissions{% endblock %}
+
+{% block account_body %}
+<p class="lead">Les textes que vous avez partagés. Ils restent anonymes pour
+  l'équipe ; cet historique n'est visible que par vous.</p>
+
+{% if submissions %}
+  <div class="account-card">
+    {% for s in submissions %}
+      <div class="account-row account-row--static">
+        <span>
+          <strong>{{ s.topic|default:"Texte partagé" }}</strong>
+          <small>Envoyé le {{ s.created_at|date:"j F Y" }}</small>
+        </span>
+        <span class="account-row__excerpt">{{ s.message|truncatewords:18 }}</span>
+        <span class="status-pill status-pill--{{ s.status }}">{{ s.get_status_display }}</span>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="empty-state">Vous n'avez pas encore partagé de texte.
+    <a href="{% url 'submissions:submit' %}">Soumettre un texte</a> — anonymement,
+    bien sûr.</p>
+{% endif %}
+{% endblock %}

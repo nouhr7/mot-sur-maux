@@ -1,0 +1,17 @@
+{% extends "accounts/base_account.html" %}
+
+{% block title %}Supprimer un texte — Mon journal{% endblock %}
+{% block account_title %}Supprimer ce texte ?{% endblock %}
+
+{% block account_body %}
+<div class="form-card">
+  <p>Vous êtes sur le point de supprimer définitivement :</p>
+  <p class="team-delete__name">« {{ entry.display_title }} »</p>
+  <p class="muted-note">Cette action est irréversible.</p>
+  <form method="post" class="account-actionbar">
+    {% csrf_token %}
+    <a class="btn btn--ghost" href="{% url 'accounts:journal_list' %}">Annuler</a>
+    <button class="btn btn--danger" type="submit">Oui, supprimer</button>
+  </form>
+</div>
+{% endblock %}

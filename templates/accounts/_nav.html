@@ -1,0 +1,9 @@
+{# Secondary navigation for a member's personal space. #}
+<nav class="account-nav" aria-label="Navigation de mon espace">
+  <a href="{% url 'accounts:dashboard' %}" class="{% if active == 'home' %}is-active{% endif %}">Accueil</a>
+  <a href="{% url 'accounts:journal_list' %}" class="{% if active == 'journal' %}is-active{% endif %}">Mon journal</a>
+  <a href="{% url 'accounts:bookmark_list' %}" class="{% if active == 'favoris' %}is-active{% endif %}">Mes favoris</a>
+  <a href="{% url 'accounts:read_list' %}" class="{% if active == 'lectures' %}is-active{% endif %}">Mes lectures</a>
+  <a href="{% url 'accounts:submission_list' %}" class="{% if active == 'soumissions' %}is-active{% endif %}">Mes soumissions</a>
+  <a href="{% url 'accounts:settings' %}" class="{% if active == 'parametres' %}is-active{% endif %}">Paramètres</a>
+</nav>

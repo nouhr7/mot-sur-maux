@@ -73,8 +73,19 @@ def article_detail(request, slug):
         Article.published.filter(category=article.category)
         .exclude(pk=article.pk)[:3]
     )
+
+    # For signed-in members: remember this read and expose the bookmark state.
+    is_bookmarked = False
+    if request.user.is_authenticated:
+        from accounts.models import ArticleRead, Bookmark
+
+        ArticleRead.objects.update_or_create(user=request.user, article=article)
+        is_bookmarked = Bookmark.objects.filter(
+            user=request.user, article=article
+        ).exists()
+
     return render(
         request,
         "blog/article_detail.html",
-        {"article": article, "related": related},
+        {"article": article, "related": related, "is_bookmarked": is_bookmarked},
     )

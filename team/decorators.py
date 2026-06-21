@@ -18,7 +18,8 @@ def team_member_required(view):
     def wrapper(request, *args, **kwargs):
         user = request.user
         if not user.is_authenticated:
-            return redirect_to_login(request.get_full_path())
+            # Send to the team login (not the member login).
+            return redirect_to_login(request.get_full_path(), login_url="team:login")
         if not (user.is_active and user.is_staff):
             raise PermissionDenied(
                 "Ce compte n'a pas accès à l'espace équipe."

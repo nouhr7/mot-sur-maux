@@ -1,0 +1,16 @@
+{% extends "team/base_team.html" %}
+
+{% block title %}Mon profil{% endblock %}
+
+{% block body %}
+<header class="team-head">
+  <div>
+    <p class="eyebrow">Mon profil</p>
+    <h1>Mon profil</h1>
+    <p class="lead">Votre photo s'affiche dans le tableau de bord. Vous pouvez
+      aussi changer votre mot de passe ici.</p>
+  </div>
+</header>
+
+{% include "accounts/_profile_forms.html" %}
+{% endblock %}

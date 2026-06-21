@@ -35,4 +35,7 @@ urlpatterns = [
 
     # Demandes d'atelier
     path("demandes/", views.request_list, name="request_list"),
+
+    # Mon profil
+    path("profil/", views.profile, name="profile"),
 ]

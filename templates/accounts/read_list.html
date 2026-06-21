@@ -1,0 +1,25 @@
+{% extends "accounts/base_account.html" %}
+
+{% block title %}Mes lectures — {{ SITE_NAME }}{% endblock %}
+{% block account_title %}Mes lectures{% endblock %}
+
+{% block account_body %}
+<p class="lead">Les articles que vous avez déjà parcourus, le plus récent d'abord.</p>
+
+{% if reads %}
+  <div class="account-card">
+    {% for read in reads %}
+      <a class="account-row" href="{{ read.article.get_absolute_url }}">
+        <span>
+          <strong>{{ read.article.title }}</strong>
+          <small>{{ read.article.category.name }} · lu le {{ read.read_at|date:"j F Y" }}</small>
+        </span>
+        <span class="status-pill status-pill--ok">Déjà lu</span>
+      </a>
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="empty-state">Vous n'avez pas encore lu d'article en étant connecté·e.
+    <a href="{% url 'blog:article_list' %}">Découvrir les articles</a>.</p>
+{% endif %}
+{% endblock %}

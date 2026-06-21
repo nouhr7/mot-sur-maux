@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     "submissions",
     "workshops",
     "resources",
+    "accounts",
     "team",
 ]
 
@@ -91,10 +92,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-# Authentication — the team's writing space (/equipe/) uses these.
-LOGIN_URL = "team:login"
-LOGIN_REDIRECT_URL = "team:dashboard"
-LOGOUT_REDIRECT_URL = "team:login"
+# Authentication.
+# Members sign in at /compte/ ; the team has its own login at /equipe/ which
+# overrides the redirect to its own dashboard.
+LOGIN_URL = "accounts:login"
+LOGIN_REDIRECT_URL = "accounts:dashboard"
+LOGOUT_REDIRECT_URL = "core:home"
 
 
 # Database

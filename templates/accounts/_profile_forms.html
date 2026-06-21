@@ -1,0 +1,32 @@
+{# Shared "edit my profile" panel: avatar + display name, and password change.
+   Both forms POST to the current page; the view tells them apart via the
+   submit button name (save_profile / change_password). #}
+<div class="profile-cards">
+  <form class="form-card" method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    <h2>Photo &amp; nom</h2>
+    <div class="profile-avatar">
+      <span class="profile-avatar__preview">
+        {% if user.profile.avatar %}
+          <img src="{{ user.profile.avatar.url }}" alt="Votre photo de profil">
+        {% else %}
+          {{ user.profile.initials }}
+        {% endif %}
+      </span>
+      <div class="profile-avatar__fields">
+        {% include "partials/_field.html" with field=profile_form.first_name %}
+        {% include "partials/_field.html" with field=profile_form.avatar %}
+      </div>
+    </div>
+    <button class="btn btn--primary" type="submit" name="save_profile" value="1">Enregistrer</button>
+  </form>
+
+  <form class="form-card" method="post" novalidate>
+    {% csrf_token %}
+    <h2>Mot de passe</h2>
+    {% for field in password_form %}
+      {% include "partials/_field.html" with field=field %}
+    {% endfor %}
+    <button class="btn btn--primary" type="submit" name="change_password" value="1">Changer le mot de passe</button>
+  </form>
+</div>

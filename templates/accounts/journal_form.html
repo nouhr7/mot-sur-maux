@@ -1,0 +1,23 @@
+{% extends "accounts/base_account.html" %}
+
+{% block title %}{% if is_new %}Nouveau texte{% else %}Modifier{% endif %} — Mon journal{% endblock %}
+{% block account_title %}{% if is_new %}Nouveau texte{% else %}Modifier mon texte{% endif %}{% endblock %}
+
+{% block account_body %}
+<form class="form-card" method="post" novalidate>
+  {% csrf_token %}
+  {% include "partials/_field.html" with field=form.title %}
+  {% include "partials/_field.html" with field=form.content %}
+  <div class="account-actionbar">
+    <a class="btn btn--ghost" href="{% url 'accounts:journal_list' %}">Annuler</a>
+    <div>
+      {% if not is_new %}
+        <a class="btn btn--light" href="{% url 'submissions:submit' %}?journal={{ entry.pk }}">Partager ce texte anonymement</a>
+      {% endif %}
+      <button class="btn btn--primary" type="submit">Enregistrer</button>
+    </div>
+  </div>
+</form>
+<p class="helptext" style="margin-top:1rem">🔒 Vos textes sont privés. « Partager
+  anonymement » ouvre le formulaire de soumission, sans dévoiler votre identité.</p>
+{% endblock %}

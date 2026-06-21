@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 
@@ -29,6 +30,18 @@ class Submission(models.Model):
     )
     # Facultatif : une personne peut souhaiter être recontactée. Vide = anonyme.
     contact_email = models.EmailField("Courriel (facultatif)", blank=True)
+
+    # Facultatif : si la personne était connectée, on relie la soumission à son
+    # compte pour qu'elle la retrouve dans son historique. La modération reste
+    # anonyme (ce lien n'est pas affiché dans l'espace équipe).
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name="Membre (historique)",
+        on_delete=models.SET_NULL,
+        related_name="submissions",
+        blank=True,
+        null=True,
+    )
 
     status = models.CharField(
         max_length=12, choices=Status.choices, default=Status.NEW
