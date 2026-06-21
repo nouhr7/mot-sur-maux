@@ -105,6 +105,9 @@ img { max-width: 100%; display: block; }
 .btn--light { background: var(--cream); color: var(--green-900); }
 .btn--light:hover { background: #fff; color: var(--green-900); }
 .btn--small { padding: .55rem 1.1rem; font-size: .92rem; }
+/* Discreet staff entrance in the public header (soft green pill). */
+.brand-staff-link { background: var(--green-100); border-color: transparent; color: var(--green-800); gap: .4rem; }
+.brand-staff-link:hover { background: var(--green-800); color: #fff; }
 
 /* --- Header / navigation --------------------------------------------------- */
 .site-header {

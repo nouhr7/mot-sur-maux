@@ -53,6 +53,35 @@ class TeamAccessTests(TestCase):
         self.assertEqual(self.client.get(reverse("team:dashboard")).status_code, 200)
 
 
+class HeaderEntryTests(TestCase):
+    """The friendly access points shown in the public site header."""
+
+    def _header(self, **login):
+        if login:
+            self.client.login(**login)
+        return self.client.get(reverse("submissions:submit")).content.decode()
+
+    def test_staff_sees_team_entrance(self):
+        User = get_user_model()
+        User.objects.create_user("redac", password="pw", is_staff=True)
+        html = self._header(username="redac", password="pw")
+        # The header button is marked with the brand-staff-link class.
+        self.assertIn("brand-staff-link", html)
+        self.assertIn("Espace équipe", html)
+
+    def test_member_sees_personal_space(self):
+        User = get_user_model()
+        User.objects.create_user("mia", password="pw")
+        html = self._header(username="mia", password="pw")
+        self.assertIn(reverse("accounts:dashboard"), html)
+        self.assertNotIn("brand-staff-link", html)
+
+    def test_anonymous_sees_login(self):
+        html = self._header()
+        self.assertIn(reverse("accounts:login"), html)
+        self.assertNotIn("brand-staff-link", html)
+
+
 class TeamWorkflowTests(TestCase):
     def setUp(self):
         User = get_user_model()

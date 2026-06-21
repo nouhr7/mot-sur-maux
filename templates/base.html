@@ -33,7 +33,11 @@
         <a href="{% url 'resources:list' %}">Ressources</a>
         <a href="{% url 'core:contact' %}">Contact</a>
         {% if user.is_authenticated %}
-          <a href="{% url 'accounts:dashboard' %}">Mon espace</a>
+          {% if user.is_staff %}
+            <a class="btn btn--small btn--ghost brand-staff-link" href="{% url 'team:dashboard' %}">✎ Espace équipe</a>
+          {% else %}
+            <a href="{% url 'accounts:dashboard' %}">Mon espace</a>
+          {% endif %}
         {% else %}
           <a href="{% url 'accounts:login' %}">Se connecter</a>
         {% endif %}
