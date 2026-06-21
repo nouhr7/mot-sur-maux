@@ -1,2 +1,8 @@
 Django==5.2.15
 Pillow==12.2.0
+
+# Production server & deployment
+gunicorn==23.0.0
+whitenoise==6.8.2
+dj-database-url==2.3.0
+psycopg[binary]==3.2.3

@@ -72,6 +72,15 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+# WhiteNoise lets the app serve its own static files in production.
+# Added only if installed, so local dev works without it.
+try:
+    import whitenoise  # noqa: F401
+
+    MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
+except ImportError:
+    pass
+
 ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
@@ -100,13 +109,23 @@ LOGIN_REDIRECT_URL = "accounts:dashboard"
 LOGOUT_REDIRECT_URL = "core:home"
 
 
-# Database
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+# Database — SQLite locally; any DATABASE_URL (e.g. Postgres) in production.
+try:
+    import dj_database_url
+
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+            conn_max_age=600,
+        )
     }
-}
+except ImportError:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 
 # Password validation
@@ -144,6 +163,29 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # User-uploaded files (article covers, workshop photos, ...)
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+# Use WhiteNoise's compressed static storage in production (if installed).
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"
+    },
+}
+try:
+    import whitenoise  # noqa: F401
+
+    STORAGES["staticfiles"]["BACKEND"] = (
+        "whitenoise.storage.CompressedManifestStaticFilesStorage"
+    )
+except ImportError:
+    pass
+
+# Production hardening — only kicks in when DEBUG is off (i.e. on the server).
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = env_bool("DJANGO_SECURE_SSL_REDIRECT", default=True)
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
