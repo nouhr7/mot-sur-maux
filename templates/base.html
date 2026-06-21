@@ -17,23 +17,10 @@
 
   <header class="site-header">
     <div class="container site-header__inner">
-      <a class="brand" href="{% url 'core:home' %}">
-        {# Logo « plume » (vectoriel). Pour utiliser votre propre logo, déposez-le
-           dans static/img/ et remplacez tout ce bloc <a> par :
+      <a class="brand" href="{% url 'core:home' %}">      
            <a class="brand" href="{% url 'core:home' %}">
              <img class="brand__logo" src="{% static 'img/logo.svg' %}" alt="Mots sur Maux">
-           </a> #}
-        <span class="brand__mark" aria-hidden="true">
-          <svg viewBox="0 0 48 48" width="22" height="22" focusable="false">
-            <path d="M24 8 L34 26 L24 44 L14 26 Z" fill="currentColor"/>
-            <line x1="24" y1="18" x2="24" y2="40" stroke="#14463b" stroke-width="2.4"/>
-            <circle cx="24" cy="22" r="2.2" fill="#14463b"/>
-          </svg>
-        </span>
-        <span class="brand__text">
-          <span class="brand__name">Mots sur Maux</span>
-          <span class="brand__tagline">Mettre des mots sur ses maux</span>
-        </span>
+           </a>
       </a>
 
       <input type="checkbox" id="nav-toggle" class="nav-toggle" hidden>
