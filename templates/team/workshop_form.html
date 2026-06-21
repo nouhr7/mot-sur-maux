@@ -1,0 +1,48 @@
+{% extends "team/base_team.html" %}
+
+{% block title %}{% if is_new %}Nouvel atelier{% else %}Modifier l'atelier{% endif %}{% endblock %}
+
+{% block body %}
+<header class="team-head">
+  <div>
+    <p class="eyebrow"><a href="{% url 'team:workshop_list' %}">← Ateliers</a></p>
+    <h1>{% if is_new %}Créer un atelier{% else %}Modifier l'atelier{% endif %}</h1>
+  </div>
+</header>
+
+<form method="post" enctype="multipart/form-data" class="team-form" novalidate>
+  {% csrf_token %}
+  <div class="team-form__grid">
+    <div class="team-form__main">
+      {% include "team/_field.html" with field=form.title %}
+      {% include "team/_field.html" with field=form.description %}
+      <div class="team-form__row">
+        {% include "team/_field.html" with field=form.starts_at %}
+        {% include "team/_field.html" with field=form.ends_at %}
+      </div>
+      {% include "team/_field.html" with field=form.registration_url %}
+    </div>
+
+    <aside class="team-form__side">
+      <div class="team-form__panel">
+        <h3>Lieu &amp; public</h3>
+        {% include "team/_field.html" with field=form.host_type %}
+        {% include "team/_field.html" with field=form.location_name %}
+        {% include "team/_field.html" with field=form.city %}
+        {% include "team/_field.html" with field=form.audience %}
+      </div>
+      <div class="team-form__panel">
+        <h3>Image &amp; visibilité</h3>
+        {% if workshop.image %}<img class="team-form__thumb" src="{{ workshop.image.url }}" alt="">{% endif %}
+        {% include "team/_field.html" with field=form.image %}
+        {% include "team/_toggle.html" with field=form.is_published %}
+      </div>
+    </aside>
+  </div>
+
+  <div class="team-actionbar">
+    <a class="btn btn--ghost" href="{% url 'team:workshop_list' %}">Annuler</a>
+    <button class="btn btn--primary" type="submit">Enregistrer</button>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% load static %}<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Connexion — Espace équipe Mots sur Maux</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link rel="stylesheet" href="{% static 'css/team.css' %}">
+</head>
+<body class="team-login">
+  <main class="team-login__card">
+    <a class="team-login__brand" href="{% url 'core:home' %}">
+      <span class="team-brand__mark" aria-hidden="true">
+        <svg viewBox="0 0 48 48" width="26" height="26" focusable="false">
+          <path d="M24 8 L34 26 L24 44 L14 26 Z" fill="currentColor"/>
+          <line x1="24" y1="18" x2="24" y2="40" stroke="#14463b" stroke-width="2.4"/>
+          <circle cx="24" cy="22" r="2.2" fill="#14463b"/>
+        </svg>
+      </span>
+      <span>Mots sur Maux</span>
+    </a>
+    <p class="eyebrow">Espace équipe</p>
+    <h1>Bienvenue</h1>
+    <p class="lead">Connectez-vous pour écrire vos articles et organiser vos ateliers.</p>
+
+    {% if form.non_field_errors %}
+      <div class="alert alert--error">{{ form.non_field_errors|striptags }}</div>
+    {% endif %}
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="form-field">
+        <label for="{{ form.username.id_for_label }}">Identifiant</label>
+        {{ form.username }}
+      </div>
+      <div class="form-field">
+        <label for="{{ form.password.id_for_label }}">Mot de passe</label>
+        {{ form.password }}
+      </div>
+      <input type="hidden" name="next" value="{{ next }}">
+      <button class="btn btn--primary" type="submit" style="width:100%">Se connecter</button>
+    </form>
+
+    <p class="team-login__help">Un souci de connexion ? Contactez la personne
+      responsable du site.</p>
+  </main>
+</body>
+</html>

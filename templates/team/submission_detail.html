@@ -1,0 +1,44 @@
+{% extends "team/base_team.html" %}
+
+{% block title %}Soumission{% endblock %}
+
+{% block body %}
+<header class="team-head">
+  <div>
+    <p class="eyebrow"><a href="{% url 'team:submission_list' %}">← Soumissions</a></p>
+    <h1>{{ submission.topic|default:"Soumission anonyme" }}</h1>
+    <p class="lead">Reçue le {{ submission.created_at|date:"j F Y à H\\hi" }}</p>
+  </div>
+  <div class="team-head__actions">
+    <a class="btn btn--primary" href="{% url 'team:article_create' %}?from_submission={{ submission.pk }}">✎ En faire un article</a>
+  </div>
+</header>
+
+<div class="team-cols team-cols--wide">
+  <section class="team-card">
+    {% if submission.feeling %}
+      <p class="eyebrow">Comment la personne se sentait</p>
+      <p class="team-quote">« {{ submission.feeling }} »</p>
+    {% endif %}
+    <p class="eyebrow">Ce qu'elle a partagé</p>
+    <div class="team-message">{{ submission.message|linebreaks }}</div>
+
+    {% if submission.contact_email %}
+      <p class="muted-note">La personne a laissé un courriel pour être recontactée :
+        <a href="mailto:{{ submission.contact_email }}">{{ submission.contact_email }}</a></p>
+    {% else %}
+      <p class="muted-note">Soumission entièrement anonyme — aucun moyen de recontact.</p>
+    {% endif %}
+  </section>
+
+  <aside class="team-card team-card--narrow">
+    <h2>Suivi de l'équipe</h2>
+    <form method="post" class="team-form">
+      {% csrf_token %}
+      {% include "team/_field.html" with field=form.status %}
+      {% include "team/_field.html" with field=form.moderator_notes %}
+      <button class="btn btn--primary" type="submit">Enregistrer le suivi</button>
+    </form>
+  </aside>
+</div>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "team/base_team.html" %}
+
+{% block title %}Tableau de bord{% endblock %}
+
+{% block body %}
+<header class="team-head">
+  <div>
+    <p class="eyebrow">Espace équipe</p>
+    <h1>Bonjour {{ user.first_name|default:user.username }} 🌿</h1>
+    <p class="lead">Que souhaitez-vous faire aujourd'hui ?</p>
+  </div>
+  <div class="team-head__actions">
+    <a class="btn btn--primary" href="{% url 'team:article_create' %}">✎ Écrire un article</a>
+    <a class="btn btn--ghost" href="{% url 'team:workshop_create' %}">＋ Créer un atelier</a>
+  </div>
+</header>
+
+<section class="stat-grid">
+  <a class="stat" href="{% url 'team:article_list' %}">
+    <span class="stat__num">{{ published_count }}</span>
+    <span class="stat__label">Articles publiés</span>
+  </a>
+  <a class="stat" href="{% url 'team:article_list' %}">
+    <span class="stat__num">{{ draft_count }}</span>
+    <span class="stat__label">Brouillons</span>
+  </a>
+  <a class="stat" href="{% url 'team:workshop_list' %}">
+    <span class="stat__num">{{ upcoming_count }}</span>
+    <span class="stat__label">Ateliers à venir</span>
+  </a>
+  <a class="stat {% if new_submissions %}stat--alert{% endif %}" href="{% url 'team:submission_list' %}">
+    <span class="stat__num">{{ new_submissions }}</span>
+    <span class="stat__label">Nouvelles soumissions</span>
+  </a>
+  <a class="stat {% if open_requests %}stat--alert{% endif %}" href="{% url 'team:request_list' %}">
+    <span class="stat__num">{{ open_requests }}</span>
+    <span class="stat__label">Demandes d'atelier</span>
+  </a>
+</section>
+
+<div class="team-cols">
+  <section class="team-card">
+    <div class="team-card__head">
+      <h2>Derniers articles</h2>
+      <a href="{% url 'team:article_list' %}">Tout voir →</a>
+    </div>
+    {% for article in recent_articles %}
+      <a class="team-row" href="{% url 'team:article_edit' article.pk %}">
+        <span class="team-row__main">
+          <strong>{{ article.title }}</strong>
+          <small>{{ article.category.name }} · {{ article.author.name }}</small>
+        </span>
+        {% if article.is_published %}
+          <span class="status-pill status-pill--ok">Publié</span>
+        {% else %}
+          <span class="status-pill status-pill--draft">Brouillon</span>
+        {% endif %}
+      </a>
+    {% empty %}
+      <p class="empty-state">Aucun article pour l'instant. <a href="{% url 'team:article_create' %}">Écrivez le premier !</a></p>
+    {% endfor %}
+  </section>
+
+  <section class="team-card">
+    <div class="team-card__head">
+      <h2>Soumissions récentes</h2>
+      <a href="{% url 'team:submission_list' %}">Tout voir →</a>
+    </div>
+    {% for submission in recent_submissions %}
+      <a class="team-row" href="{% url 'team:submission_detail' submission.pk %}">
+        <span class="team-row__main">
+          <strong>{{ submission.topic|default:"Sans thème" }}</strong>
+          <small>{{ submission.created_at|date:"j F Y" }}</small>
+        </span>
+        <span class="status-pill status-pill--{{ submission.status }}">{{ submission.get_status_display }}</span>
+      </a>
+    {% empty %}
+      <p class="empty-state">Aucune soumission reçue pour l'instant.</p>
+    {% endfor %}
+  </section>
+</div>
+{% endblock %}

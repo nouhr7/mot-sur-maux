@@ -1,0 +1,61 @@
+{% extends "team/base_team.html" %}
+
+{% block title %}Articles{% endblock %}
+
+{% block body %}
+<header class="team-head">
+  <div>
+    <p class="eyebrow">Articles</p>
+    <h1>Vos articles</h1>
+    <p class="lead">Écrire, modifier, publier — tout se passe ici.</p>
+  </div>
+  <div class="team-head__actions">
+    <a class="btn btn--primary" href="{% url 'team:article_create' %}">✎ Écrire un article</a>
+  </div>
+</header>
+
+<section class="team-card">
+  {% if articles %}
+  <table class="team-table">
+    <thead>
+      <tr>
+        <th>Titre</th>
+        <th>Thématique</th>
+        <th>Signé par</th>
+        <th>État</th>
+        <th class="team-table__actions">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for article in articles %}
+      <tr>
+        <td>
+          <a class="team-table__title" href="{% url 'team:article_edit' article.pk %}">{{ article.title }}</a>
+          <small>{{ article.published_at|date:"j M Y" }}{% if article.is_featured %} · ★ à la une{% endif %}</small>
+        </td>
+        <td><span class="tag">{{ article.category.name }}</span></td>
+        <td>{{ article.author.name }}</td>
+        <td>
+          {% if article.is_published %}
+            <span class="status-pill status-pill--ok">Publié</span>
+          {% else %}
+            <span class="status-pill status-pill--draft">Brouillon</span>
+          {% endif %}
+        </td>
+        <td class="team-table__actions">
+          {% if article.is_published %}
+            <a href="{{ article.get_absolute_url }}" target="_blank" rel="noopener" title="Voir en ligne">Voir</a>
+          {% endif %}
+          <a href="{% url 'team:article_edit' article.pk %}">Modifier</a>
+          <a class="is-danger" href="{% url 'team:article_delete' article.pk %}">Supprimer</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p class="empty-state">Vous n'avez pas encore d'article.
+      <a href="{% url 'team:article_create' %}">Écrivez le premier !</a></p>
+  {% endif %}
+</section>
+{% endblock %}
