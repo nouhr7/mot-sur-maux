@@ -1,0 +1,80 @@
+{% load static %}<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Espace équipe{% endblock %} — Mots sur Maux</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link rel="stylesheet" href="{% static 'css/team.css' %}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="team-body">
+  <input type="checkbox" id="team-nav-toggle" class="team-nav-toggle" hidden>
+  <div class="team-shell">
+    <aside class="team-sidebar">
+      <a class="team-brand" href="{% url 'team:dashboard' %}">
+        <span class="team-brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48" width="22" height="22" focusable="false">
+            <path d="M24 8 L34 26 L24 44 L14 26 Z" fill="currentColor"/>
+            <line x1="24" y1="18" x2="24" y2="40" stroke="#14463b" stroke-width="2.4"/>
+            <circle cx="24" cy="22" r="2.2" fill="#14463b"/>
+          </svg>
+        </span>
+        <span class="team-brand__text">
+          <strong>Mots sur Maux</strong>
+          <small>Espace équipe</small>
+        </span>
+      </a>
+
+      <label for="team-nav-toggle" class="team-burger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </label>
+
+      <nav class="team-nav" aria-label="Navigation de l'espace équipe">
+        <a href="{% url 'team:dashboard' %}" class="{% if active == 'home' %}is-active{% endif %}">
+          <span class="team-nav__icon">◆</span> Tableau de bord
+        </a>
+        <a href="{% url 'team:article_list' %}" class="{% if active == 'articles' %}is-active{% endif %}">
+          <span class="team-nav__icon">✎</span> Articles
+        </a>
+        <a href="{% url 'team:workshop_list' %}" class="{% if active == 'ateliers' %}is-active{% endif %}">
+          <span class="team-nav__icon">❉</span> Ateliers
+        </a>
+        <a href="{% url 'team:submission_list' %}" class="{% if active == 'soumissions' %}is-active{% endif %}">
+          <span class="team-nav__icon">✉</span> Soumissions
+        </a>
+        <a href="{% url 'team:request_list' %}" class="{% if active == 'demandes' %}is-active{% endif %}">
+          <span class="team-nav__icon">☎</span> Demandes d'atelier
+        </a>
+      </nav>
+
+      <div class="team-sidebar__foot">
+        <a class="team-sidebar__site" href="{% url 'core:home' %}" target="_blank" rel="noopener">↗ Voir le site</a>
+        <div class="team-user">
+          <span class="team-user__avatar">{{ user.first_name|default:user.username|make_list|first|upper }}</span>
+          <span class="team-user__name">{{ user.first_name|default:user.username }}</span>
+          <form method="post" action="{% url 'team:logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="team-user__logout">Se déconnecter</button>
+          </form>
+        </div>
+      </div>
+    </aside>
+
+    <main class="team-main">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert--{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+      {% block body %}{% endblock %}
+    </main>
+  </div>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

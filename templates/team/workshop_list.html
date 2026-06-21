@@ -1,0 +1,53 @@
+{% extends "team/base_team.html" %}
+
+{% block title %}Ateliers{% endblock %}
+
+{% block body %}
+<header class="team-head">
+  <div>
+    <p class="eyebrow">Ateliers</p>
+    <h1>Vos ateliers</h1>
+    <p class="lead">Les ateliers d'écriture en présentiel, à venir et passés.</p>
+  </div>
+  <div class="team-head__actions">
+    <a class="btn btn--primary" href="{% url 'team:workshop_create' %}">＋ Créer un atelier</a>
+  </div>
+</header>
+
+<section class="team-card">
+  <div class="team-card__head"><h2>À venir</h2></div>
+  {% for w in upcoming %}
+    <div class="team-row">
+      <span class="team-row__main">
+        <strong>{{ w.title }}</strong>
+        <small>{{ w.starts_at|date:"l j F Y · H\\hi" }}{% if w.city %} · {{ w.city }}{% endif %}</small>
+      </span>
+      {% if not w.is_published %}<span class="status-pill status-pill--draft">Masqué</span>{% endif %}
+      <span class="team-row__actions">
+        <a href="{% url 'team:workshop_edit' w.pk %}">Modifier</a>
+        <a class="is-danger" href="{% url 'team:workshop_delete' w.pk %}">Supprimer</a>
+      </span>
+    </div>
+  {% empty %}
+    <p class="empty-state">Aucun atelier à venir. <a href="{% url 'team:workshop_create' %}">Créez-en un !</a></p>
+  {% endfor %}
+</section>
+
+{% if past %}
+<section class="team-card">
+  <div class="team-card__head"><h2>Passés</h2></div>
+  {% for w in past %}
+    <div class="team-row">
+      <span class="team-row__main">
+        <strong>{{ w.title }}</strong>
+        <small>{{ w.starts_at|date:"j F Y" }}{% if w.city %} · {{ w.city }}{% endif %}</small>
+      </span>
+      <span class="team-row__actions">
+        <a href="{% url 'team:workshop_edit' w.pk %}">Modifier</a>
+        <a class="is-danger" href="{% url 'team:workshop_delete' w.pk %}">Supprimer</a>
+      </span>
+    </div>
+  {% endfor %}
+</section>
+{% endif %}
+{% endblock %}

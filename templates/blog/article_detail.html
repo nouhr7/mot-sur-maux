@@ -22,9 +22,9 @@
 
   <p class="prose-lead">{{ article.excerpt }}</p>
 
-  {% for paragraph in article.paragraphs %}
-    <p>{{ paragraph }}</p>
-  {% endfor %}
+  <div class="article-body__content">
+    {{ article.body_html }}
+  </div>
 
   {% if article.source_submission %}
     <p class="credit">Cet article s'inspire d'une soumission anonyme reçue sur la plateforme.</p>

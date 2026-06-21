@@ -1,0 +1,10 @@
+{# A checkbox rendered as a friendly on/off switch. #}
+<div class="form-toggle{% if field.errors %} has-error{% endif %}">
+  <label class="switch">
+    {{ field }}
+    <span class="switch__slider" aria-hidden="true"></span>
+    <span class="switch__label">{{ field.label }}</span>
+  </label>
+  {% if field.help_text %}<span class="helptext">{{ field.help_text }}</span>{% endif %}
+  {% if field.errors %}<div class="form-errors">{{ field.errors|striptags }}</div>{% endif %}
+</div>

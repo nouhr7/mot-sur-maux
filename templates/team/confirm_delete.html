@@ -1,0 +1,24 @@
+{% extends "team/base_team.html" %}
+
+{% block title %}Confirmer la suppression{% endblock %}
+
+{% block body %}
+<header class="team-head">
+  <div>
+    <p class="eyebrow">Suppression</p>
+    <h1>Supprimer {{ kind }} ?</h1>
+  </div>
+</header>
+
+<section class="team-card team-card--narrow">
+  <p>Vous êtes sur le point de supprimer définitivement :</p>
+  <p class="team-delete__name">« {{ object_label }} »</p>
+  <p class="muted-note">Cette action est irréversible.</p>
+
+  <form method="post" class="team-actionbar">
+    {% csrf_token %}
+    <a class="btn btn--ghost" href="{{ cancel_url }}">Annuler</a>
+    <button class="btn btn--danger" type="submit">Oui, supprimer</button>
+  </form>
+</section>
+{% endblock %}

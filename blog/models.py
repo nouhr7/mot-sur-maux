@@ -179,6 +179,30 @@ class Article(models.Model):
         return [p.strip() for p in re.split(r"\n\s*\n", self.content) if p.strip()]
 
     @property
+    def body_html(self):
+        """Render the article body for templates.
+
+        Articles written in the team's visual editor are stored as
+        (sanitised) HTML; older or admin-typed articles are plain text with
+        blank-line-separated paragraphs. We detect which it is and return
+        safe HTML either way.
+        """
+        from django.utils.html import escape
+        from django.utils.safestring import mark_safe
+
+        content = self.content or ""
+        if re.search(
+            r"</(p|h2|h3|h4|ul|ol|li|blockquote|strong|em|b|i|u|a)>",
+            content,
+            re.IGNORECASE,
+        ):
+            # Already HTML (and sanitised on save by the editor form).
+            return mark_safe(content)
+        paragraphs = "".join(f"<p>{escape(p)}</p>" for p in self.paragraphs)
+        return mark_safe(paragraphs)
+
+    @property
     def reading_minutes(self):
-        words = len(re.findall(r"\w+", self.content))
+        text = re.sub(r"<[^>]+>", " ", self.content or "")
+        words = len(re.findall(r"\w+", text))
         return max(1, math.ceil(words / 200))

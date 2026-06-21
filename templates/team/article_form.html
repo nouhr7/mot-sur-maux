@@ -1,0 +1,79 @@
+{% extends "team/base_team.html" %}
+{% load static %}
+
+{% block title %}{% if is_new %}Nouvel article{% else %}Modifier l'article{% endif %}{% endblock %}
+
+{% block extra_head %}
+  <link href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.snow.css" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+<header class="team-head">
+  <div>
+    <p class="eyebrow"><a href="{% url 'team:article_list' %}">← Articles</a></p>
+    <h1>{% if is_new %}Écrire un article{% else %}Modifier l'article{% endif %}</h1>
+  </div>
+</header>
+
+{% if submission %}
+  <div class="alert alert--info">
+    ✨ Cet article s'inspire d'une <a href="{% url 'team:submission_detail' submission.pk %}">soumission anonyme</a>.
+    Le résumé et le contenu ont été pré-remplis — à vous de les retravailler avec soin.
+  </div>
+{% endif %}
+
+<form method="post" enctype="multipart/form-data" class="team-form" novalidate>
+  {% csrf_token %}
+  {% if submission %}<input type="hidden" name="from_submission" value="{{ submission.pk }}">{% endif %}
+
+  <div class="team-form__grid">
+    <div class="team-form__main">
+      {% include "team/_field.html" with field=form.title %}
+      {% include "team/_field.html" with field=form.excerpt %}
+
+      <div class="form-field{% if form.content.errors %} has-error{% endif %}">
+        <label>Contenu</label>
+        {{ form.content }}
+        <div id="editor"></div>
+        {% if form.content.errors %}<div class="form-errors">{{ form.content.errors|striptags }}</div>{% endif %}
+        <span class="helptext">Utilisez la barre d'outils pour les titres, le gras, les listes, les citations et les liens.</span>
+      </div>
+    </div>
+
+    <aside class="team-form__side">
+      <div class="team-form__panel">
+        <h3>Classement</h3>
+        {% include "team/_field.html" with field=form.category %}
+        {% include "team/_field.html" with field=form.author %}
+        {% include "team/_toggle.html" with field=form.is_featured %}
+      </div>
+      <div class="team-form__panel">
+        <h3>Image de couverture</h3>
+        {% if article.cover_image %}
+          <img class="team-form__thumb" src="{{ article.cover_image.url }}" alt="">
+        {% endif %}
+        {% include "team/_field.html" with field=form.cover_image %}
+        {% include "team/_field.html" with field=form.cover_credit %}
+      </div>
+    </aside>
+  </div>
+
+  <div class="team-actionbar">
+    <a class="btn btn--ghost" href="{% url 'team:article_list' %}">Annuler</a>
+    <div class="team-actionbar__right">
+      <button class="btn btn--light" type="submit" name="action" value="draft">Enregistrer le brouillon</button>
+      {% if not is_new and article.is_published %}
+        <button class="btn btn--ghost" type="submit" name="action" value="unpublish">Dépublier</button>
+        <button class="btn btn--primary" type="submit" name="action" value="save">Enregistrer</button>
+      {% else %}
+        <button class="btn btn--primary" type="submit" name="action" value="publish">Publier</button>
+      {% endif %}
+    </div>
+  </div>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.js"></script>
+<script src="{% static 'js/team-editor.js' %}"></script>
+{% endblock %}

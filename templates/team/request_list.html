@@ -1,0 +1,60 @@
+{% extends "team/base_team.html" %}
+
+{% block title %}Demandes d'atelier{% endblock %}
+
+{% block body %}
+<header class="team-head">
+  <div>
+    <p class="eyebrow">Demandes d'atelier</p>
+    <h1>Organismes intéressés</h1>
+    <p class="lead">Des écoles, camps et organismes souhaitent accueillir un atelier.
+      Mettez à jour le suivi au fil de vos échanges.</p>
+  </div>
+</header>
+
+<section class="team-card">
+  {% if requests %}
+  <table class="team-table">
+    <thead>
+      <tr>
+        <th>Organisme</th>
+        <th>Contact</th>
+        <th>Dates souhaitées</th>
+        <th>Suivi</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in requests %}
+      <tr>
+        <td>
+          <strong>{{ r.organization_name }}</strong>
+          <small>{{ r.get_host_type_display }}{% if r.city %} · {{ r.city }}{% endif %}</small>
+          {% if r.message %}<details class="team-details"><summary>Voir le message</summary><p>{{ r.message|linebreaks }}</p>{% if r.audience %}<p class="muted-note">Public : {{ r.audience }}</p>{% endif %}</details>{% endif %}
+        </td>
+        <td>
+          {{ r.contact_name }}<br>
+          <a href="mailto:{{ r.email }}">{{ r.email }}</a>
+          {% if r.phone %}<br><small>{{ r.phone }}</small>{% endif %}
+        </td>
+        <td>{{ r.preferred_dates|default:"—" }}</td>
+        <td>
+          <form method="post" class="team-inline-form">
+            {% csrf_token %}
+            <input type="hidden" name="pk" value="{{ r.pk }}">
+            <select name="status" onchange="this.form.submit()">
+              {% for value, label in status_choices %}
+                <option value="{{ value }}" {% if r.status == value %}selected{% endif %}>{{ label }}</option>
+              {% endfor %}
+            </select>
+            <noscript><button type="submit">OK</button></noscript>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p class="empty-state">Aucune demande pour l'instant.</p>
+  {% endif %}
+</section>
+{% endblock %}

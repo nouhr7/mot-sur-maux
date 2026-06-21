@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     "submissions",
     "workshops",
     "resources",
+    "team",
 ]
 
 MIDDLEWARE = [
@@ -89,6 +90,11 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "config.wsgi.application"
+
+# Authentication — the team's writing space (/equipe/) uses these.
+LOGIN_URL = "team:login"
+LOGIN_REDIRECT_URL = "team:dashboard"
+LOGOUT_REDIRECT_URL = "team:login"
 
 
 # Database

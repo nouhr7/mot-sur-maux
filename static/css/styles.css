@@ -282,6 +282,24 @@ img { max-width: 100%; display: block; }
 .article-body__cover { border-radius: var(--radius); overflow: hidden; margin-bottom: 2rem; box-shadow: var(--shadow); }
 .article-body p { font-size: 1.12rem; }
 .article-body .credit { font-size: .82rem; color: var(--muted); }
+
+/* Rich content produced by the team's visual editor. */
+.article-body__content p { font-size: 1.12rem; }
+.article-body__content h2 { font-size: 1.9rem; margin: 2rem 0 .6rem; }
+.article-body__content h3 { font-size: 1.45rem; margin: 1.6rem 0 .5rem; }
+.article-body__content ul,
+.article-body__content ol { font-size: 1.12rem; padding-left: 1.4rem; margin: 0 0 1.2rem; }
+.article-body__content li { margin-bottom: .4rem; }
+.article-body__content a { color: var(--green-700); text-decoration: underline; }
+.article-body__content blockquote {
+  margin: 1.6rem 0;
+  padding: .4rem 0 .4rem 1.3rem;
+  border-left: 3px solid var(--green-600);
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-style: italic;
+  color: var(--green-800);
+}
 .prose-lead {
   font-family: var(--font-display);
   font-size: 1.5rem;
