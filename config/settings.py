@@ -42,6 +42,18 @@ CSRF_TRUSTED_ORIGINS = [
     if origin
 ]
 
+# Convenience: when developing locally (DEBUG on), allow sharing the dev server
+# through an ngrok tunnel without any extra configuration. Any ngrok subdomain
+# is accepted for both host and CSRF checks. This block does nothing in
+# production (DEBUG off), so it stays safe.
+if DEBUG:
+    ALLOWED_HOSTS += [".ngrok-free.dev", ".ngrok-free.app", ".ngrok.io"]
+    CSRF_TRUSTED_ORIGINS += [
+        "https://*.ngrok-free.dev",
+        "https://*.ngrok-free.app",
+        "https://*.ngrok.io",
+    ]
+
 
 # Application definition
 
