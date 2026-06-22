@@ -1,15 +1,32 @@
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, render
 
 from .models import Article, Author, Category
 
 
 def article_list(request):
-    """The blog index — every published article, newest first."""
-    articles = Article.published.select_related("category", "author")
+    """The blog index — every published article, newest first.
 
-    featured = articles.filter(is_featured=True).first()
-    queryset = articles.exclude(pk=featured.pk) if featured else articles
+    Supports a free-text search via ``?q=`` across the title, summary, body,
+    theme and author name.
+    """
+    articles = Article.published.select_related("category", "author")
+    query = request.GET.get("q", "").strip()
+
+    if query:
+        articles = articles.filter(
+            Q(title__icontains=query)
+            | Q(excerpt__icontains=query)
+            | Q(content__icontains=query)
+            | Q(category__name__icontains=query)
+            | Q(author__name__icontains=query)
+        ).distinct()
+        featured = None
+        queryset = articles
+    else:
+        featured = articles.filter(is_featured=True).first()
+        queryset = articles.exclude(pk=featured.pk) if featured else articles
 
     paginator = Paginator(queryset, 9)
     page = paginator.get_page(request.GET.get("page"))
@@ -22,6 +39,8 @@ def article_list(request):
             "page_obj": page,
             "categories": Category.objects.all(),
             "active_category": None,
+            "query": query,
+            "result_count": paginator.count if query else None,
         },
     )
 

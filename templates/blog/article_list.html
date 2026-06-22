@@ -15,12 +15,27 @@
 
 <section class="section">
   <div class="container">
+    <form class="search-bar" method="get" role="search" action="{% url 'blog:article_list' %}">
+      <input type="search" name="q" value="{{ query }}"
+             placeholder="Rechercher un article, un thème, un mot…"
+             aria-label="Rechercher un article">
+      <button class="btn btn--small btn--primary" type="submit">Rechercher</button>
+    </form>
+
     <nav class="filter-bar" aria-label="Filtrer par thématique">
-      <a href="{% url 'blog:article_list' %}" class="{% if not active_category %}is-active{% endif %}">Tout</a>
+      <a href="{% url 'blog:article_list' %}" class="{% if not active_category and not query %}is-active{% endif %}">Tout</a>
       {% for category in categories %}
         <a href="{{ category.get_absolute_url }}" class="{% if active_category == category %}is-active{% endif %}">{{ category.name }}</a>
       {% endfor %}
     </nav>
+
+    {% if query %}
+      <p class="search-results-info">
+        {{ result_count }} résultat{{ result_count|pluralize }} pour
+        « <strong>{{ query }}</strong> » ·
+        <a href="{% url 'blog:article_list' %}">Réinitialiser</a>
+      </p>
+    {% endif %}
 
     {% if featured %}
       {% include "blog/_featured.html" with article=featured %}
@@ -33,6 +48,9 @@
         {% endfor %}
       </div>
       {% include "blog/_pagination.html" %}
+    {% elif query %}
+      <p class="empty-state">Aucun article ne correspond à « {{ query }} ».
+        Essayez d'autres mots, ou <a href="{% url 'blog:article_list' %}">parcourez tous les articles</a>.</p>
     {% elif not featured %}
       <p class="empty-state">Aucun article pour le moment. Revenez bientôt — les premiers mots
         arrivent.</p>

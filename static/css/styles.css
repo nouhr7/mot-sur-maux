@@ -263,6 +263,17 @@ img { max-width: 100%; display: block; }
 .featured__title { font-size: clamp(1.8rem, 3vw, 2.6rem); }
 .featured__title a { color: var(--green-900); }
 
+/* --- Article search -------------------------------------------------------- */
+.search-bar { display: flex; gap: .6rem; margin-bottom: 1.4rem; max-width: 580px; }
+.search-bar input {
+  flex: 1; min-width: 0;
+  padding: .7rem 1rem;
+  border: 1.5px solid var(--line); border-radius: 999px;
+  background: #fff; font: inherit; color: var(--ink);
+}
+.search-bar input:focus { outline: none; border-color: var(--green-600); box-shadow: 0 0 0 3px rgba(46, 125, 91, .18); }
+.search-results-info { color: var(--muted); margin-bottom: 1.4rem; }
+
 /* --- Category filter bar --------------------------------------------------- */
 .filter-bar { display: flex; flex-wrap: wrap; gap: .6rem; margin-bottom: 2rem; }
 .filter-bar a {
