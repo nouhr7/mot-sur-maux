@@ -120,6 +120,22 @@ LOGIN_URL = "accounts:login"
 LOGIN_REDIRECT_URL = "accounts:dashboard"
 LOGOUT_REDIRECT_URL = "core:home"
 
+# Email — used for password reset. In development (no SMTP configured), emails
+# are printed to the terminal so the reset link is easy to copy. In production,
+# set the DJANGO_EMAIL_* variables to send real messages.
+DEFAULT_FROM_EMAIL = os.environ.get(
+    "DJANGO_DEFAULT_FROM_EMAIL", "Mots sur Maux <bonjour@motssurmaux.ca>"
+)
+if os.environ.get("DJANGO_EMAIL_HOST"):
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_HOST = os.environ["DJANGO_EMAIL_HOST"]
+    EMAIL_PORT = int(os.environ.get("DJANGO_EMAIL_PORT", "587"))
+    EMAIL_HOST_USER = os.environ.get("DJANGO_EMAIL_HOST_USER", "")
+    EMAIL_HOST_PASSWORD = os.environ.get("DJANGO_EMAIL_HOST_PASSWORD", "")
+    EMAIL_USE_TLS = env_bool("DJANGO_EMAIL_USE_TLS", default=True)
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
 
 # Database — SQLite locally; any DATABASE_URL (e.g. Postgres) in production.
 try:

@@ -99,5 +99,39 @@
       </p>
     </div>
   </footer>
+
+  {# Bouton flottant « Aide immédiate » — présent sur tout le site public. #}
+  <details class="help-fab" id="help-fab">
+    <summary class="help-fab__btn" aria-label="Aide immédiate">
+      <svg class="help-fab__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="currentColor"/>
+      </svg>
+      <span>Aide immédiate</span>
+    </summary>
+    <div class="help-fab__panel" role="dialog" aria-label="Aide immédiate">
+      <p class="help-fab__title">Besoin d'aide maintenant&nbsp;?</p>
+      <p class="help-fab__text">Tu n'es pas seul·e. Si tu traverses un moment
+        difficile, parle à quelqu'un tout de suite&nbsp;:</p>
+      <div class="help-fab__actions">
+        <a class="btn btn--primary btn--small" href="tel:988">Appeler le 9-8-8</a>
+        <a class="btn btn--ghost btn--small" href="sms:988">Texter le 9-8-8</a>
+      </div>
+      <p class="help-fab__note">Ligne d'aide en cas de crise (Canada), 24 h/24,
+        gratuite et confidentielle.</p>
+      <a class="help-fab__more" href="{% url 'resources:list' %}">Voir toutes les ressources →</a>
+    </div>
+  </details>
+  <script>
+    (function () {
+      var fab = document.getElementById('help-fab');
+      if (!fab) return;
+      document.addEventListener('click', function (e) {
+        if (fab.open && !fab.contains(e.target)) { fab.open = false; }
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && fab.open) { fab.open = false; }
+      });
+    })();
+  </script>
 </body>
 </html>

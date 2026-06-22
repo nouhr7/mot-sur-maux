@@ -16,6 +16,14 @@ class LegalPagesTests(TestCase):
         self.assertIn(reverse("core:conditions"), html)
 
 
+class HelpButtonTests(TestCase):
+    def test_floating_help_button_on_public_pages(self):
+        html = self.client.get(reverse("core:home")).content.decode()
+        self.assertIn("help-fab", html)
+        self.assertIn("Aide immédiate", html)
+        self.assertIn("tel:988", html)
+
+
 class ContentWarningTests(TestCase):
     def setUp(self):
         self.category = Category.objects.create(name="Anxiété")

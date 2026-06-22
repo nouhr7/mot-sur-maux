@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.core import mail
 from django.test import TestCase
 from django.urls import reverse
 
@@ -8,6 +9,21 @@ from submissions.models import Submission
 from .models import ArticleRead, Bookmark, JournalEntry, Profile
 
 User = get_user_model()
+
+
+class PasswordResetTests(TestCase):
+    def test_reset_sends_email_with_link(self):
+        User.objects.create_user("mia", email="mia@example.com", password="old-pw")
+        resp = self.client.post(
+            reverse("accounts:password_reset"), {"email": "mia@example.com"}
+        )
+        self.assertRedirects(resp, reverse("accounts:password_reset_done"))
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn("/compte/mot-de-passe/", mail.outbox[0].body)
+
+    def test_login_page_offers_reset(self):
+        html = self.client.get(reverse("accounts:login")).content.decode()
+        self.assertIn(reverse("accounts:password_reset"), html)
 
 
 class ProfileSignalTests(TestCase):

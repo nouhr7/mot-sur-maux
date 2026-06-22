@@ -29,7 +29,9 @@
       </div>
       <input type="hidden" name="next" value="{{ next }}">
       <button class="btn btn--primary mt-2" type="submit">Se connecter</button>
-      <p class="helptext" style="margin-top:1rem">Pas encore de compte ?
+      <p class="helptext" style="margin-top:1rem">
+        <a href="{% url 'accounts:password_reset' %}">Mot de passe oublié ?</a></p>
+      <p class="helptext">Pas encore de compte ?
         <a href="{% url 'accounts:signup' %}">Créer un compte gratuitement</a>.</p>
       <p class="helptext">Membre de l'équipe ?
         <a href="{% url 'team:login' %}">Accéder à l'espace équipe →</a></p>
