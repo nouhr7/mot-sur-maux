@@ -6,7 +6,10 @@
     {% endif %}
   </a>
   <div class="article-card__body">
-    <span class="chip" style="background: {{ article.category.color }}">{{ article.category.name }}</span>
+    <span class="card-chips">
+      <span class="chip" style="background: {{ article.category.color }}">{{ article.category.name }}</span>
+      {% if article.content_warning %}<span class="chip chip--warning" title="Contenu sensible : {{ article.content_warning }}">⚠ Sensible</span>{% endif %}
+    </span>
     <h3 class="article-card__title"><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h3>
     <p class="article-card__excerpt">{{ article.excerpt }}</p>
     <div class="article-card__meta">

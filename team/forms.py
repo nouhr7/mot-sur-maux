@@ -23,7 +23,8 @@ class ArticleForm(forms.ModelForm):
         model = Article
         fields = [
             "title", "category", "author", "excerpt",
-            "content", "cover_image", "cover_credit", "is_featured",
+            "content", "content_warning",
+            "cover_image", "cover_credit", "is_featured",
         ]
         labels = {
             "title": "Titre de l'article",
@@ -31,6 +32,7 @@ class ArticleForm(forms.ModelForm):
             "author": "Signé par",
             "excerpt": "Chapeau (résumé court)",
             "content": "Contenu",
+            "content_warning": "Avertissement de contenu",
             "cover_image": "Image de couverture",
             "cover_credit": "Crédit de l'image",
             "is_featured": "Mettre à la une",
@@ -38,6 +40,8 @@ class ArticleForm(forms.ModelForm):
         help_texts = {
             "excerpt": "Une ou deux phrases qui donnent envie de lire. "
                        "Affiché dans les listes et en introduction.",
+            "content_warning": "Laissez vide si l'article n'aborde rien de sensible. "
+                               "Sinon, nommez le sujet (ex. : « suicide », « automutilation »).",
             "cover_image": "Facultatif. Une belle image en haut de l'article.",
             "is_featured": "L'article apparaîtra en vedette sur la page Articles.",
         }
@@ -52,6 +56,9 @@ class ArticleForm(forms.ModelForm):
             ),
             # Hidden: the visible editor (Quill) writes its HTML in here.
             "content": forms.Textarea(attrs={"id": "id_content", "hidden": True}),
+            "content_warning": forms.TextInput(
+                attrs={"placeholder": "Ex. : suicide, automutilation"}
+            ),
             "cover_credit": forms.TextInput(
                 attrs={"placeholder": "Ex. : Photo de Jean Dupont"}
             ),

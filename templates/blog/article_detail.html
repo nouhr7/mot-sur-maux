@@ -22,6 +22,16 @@
 </section>
 
 <article class="container article-body">
+  {% if article.content_warning %}
+    <aside class="content-warning" role="note">
+      <p class="content-warning__title">⚠️ Avertissement de contenu</p>
+      <p>Ce texte aborde&nbsp;: <strong>{{ article.content_warning }}</strong>.
+        Prends soin de toi en le lisant. Si tu traverses une période difficile,
+        des ressources existent — <a href="{% url 'resources:list' %}">voir les ressources</a>
+        ou compose/texte le <strong>9-8-8</strong>.</p>
+    </aside>
+  {% endif %}
+
   {% if article.cover_image %}
     <figure class="article-body__cover">
       <img src="{{ article.cover_image.url }}" alt="{{ article.title }}">

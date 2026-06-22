@@ -303,6 +303,33 @@ img { max-width: 100%; display: block; }
   font-style: italic;
   color: var(--green-800);
 }
+
+/* --- Content / trigger warnings -------------------------------------------- */
+.content-warning {
+  background: #fff4e2;
+  border: 1px solid #f0c98b;
+  border-left: 4px solid #e0962f;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  margin: 0 0 1.8rem;
+  color: #5b4220;
+}
+.content-warning__title { font-weight: 700; margin: 0 0 .3rem; color: #9a5b12; }
+.content-warning p { margin: 0; font-size: 1rem; }
+.content-warning a { color: #8a4f10; text-decoration: underline; }
+.card-chips { display: inline-flex; gap: .4rem; flex-wrap: wrap; align-items: center; }
+.chip--warning { background: #e0962f; color: #fff; }
+
+/* --- Legal pages (confidentialité, conditions) ----------------------------- */
+.legal { max-width: 72ch; margin-inline: auto; }
+.legal h2 { font-size: 1.5rem; margin: 2rem 0 .6rem; }
+.legal p, .legal li { font-size: 1.05rem; }
+.legal ul { padding-left: 1.3rem; margin: 0 0 1.2rem; }
+.legal li { margin-bottom: .45rem; }
+.legal a { color: var(--green-700); text-decoration: underline; }
+.legal .content-warning { margin-top: 2rem; }
+
+.site-footer__links { display: flex; gap: 1.3rem; flex-wrap: wrap; margin: .5rem 0 0; }
 .prose-lead {
   font-family: var(--font-display);
   font-size: 1.5rem;

@@ -38,7 +38,7 @@ class ArticleAdmin(admin.ModelAdmin):
     autocomplete_fields = ("source_submission",)
     fieldsets = (
         (None, {"fields": ("title", "slug", "category", "author")}),
-        ("Contenu", {"fields": ("excerpt", "content")}),
+        ("Contenu", {"fields": ("excerpt", "content", "content_warning")}),
         ("Image", {"fields": ("cover_image", "cover_credit")}),
         (
             "Publication",

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{# Modèle de politique de confidentialité — à faire valider par un·e juriste
+   avant une ouverture publique large. Rédigé d'après ce que le site fait
+   réellement (comptes, journal privé, soumissions, ateliers, contact). #}
+
+{% block title %}Politique de confidentialité — {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<section class="article-hero">
+  <div class="container article-hero__inner">
+    <p class="eyebrow" style="color:#9fd3bd">Vos renseignements</p>
+    <h1>Politique de confidentialité</h1>
+    <p class="meta">Dernière mise à jour : 22 juin 2026</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="legal">
+      <p>Chez {{ SITE_NAME }}, nous prenons soin de vos renseignements personnels
+        avec le même respect que celui que nous portons à vos mots. Cette politique
+        explique ce que nous recueillons, pourquoi, et les droits dont vous disposez.</p>
+
+      <h2>1. Naviguer sans compte</h2>
+      <p>Vous pouvez lire les articles, consulter les ressources et soumettre un
+        texte de façon anonyme <strong>sans créer de compte</strong> ni fournir
+        votre identité. Le compte est toujours facultatif.</p>
+
+      <h2>2. Les renseignements que nous recueillons</h2>
+      <ul>
+        <li><strong>Compte (facultatif)</strong> : un identifiant, et si vous le
+          souhaitez, un prénom et un courriel.</li>
+        <li><strong>Journal personnel</strong> : les textes que vous y écrivez.
+          Ils sont <strong>privés</strong> — vous seul·e pouvez les consulter.</li>
+        <li><strong>Favoris et lectures</strong> : les articles que vous enregistrez
+          ou consultez en étant connecté·e.</li>
+        <li><strong>Soumissions</strong> : le texte que vous partagez. Si vous étiez
+          connecté·e, un lien vers votre compte est conservé pour votre historique ;
+          la modération par l'équipe demeure anonyme.</li>
+        <li><strong>Demandes d'atelier</strong> : les coordonnées de l'organisme
+          (nom, personne-ressource, courriel, téléphone).</li>
+        <li><strong>Formulaire de contact</strong> : nom, courriel et message.</li>
+        <li><strong>Données techniques</strong> : témoins de session nécessaires à
+          la connexion, et journaux de serveur (adresse IP, navigateur) à des fins
+          de sécurité.</li>
+      </ul>
+
+      <h2>3. Pourquoi nous les utilisons</h2>
+      <p>Pour fournir le service (compte, journal, favoris), assurer une modération
+        bienveillante, répondre à vos messages, organiser les ateliers et protéger
+        la plateforme. Nous ne <strong>vendons jamais</strong> vos renseignements et
+        ne les utilisons pas à des fins publicitaires.</p>
+
+      <h2>4. Partage</h2>
+      <p>Vos renseignements ne sont partagés qu'avec les prestataires strictement
+        nécessaires au fonctionnement du site (par exemple l'hébergement), tenus à
+        la confidentialité. Aucune revente à des tiers.</p>
+
+      <h2>5. Conservation et suppression</h2>
+      <p>Vous pouvez supprimer vos textes de journal et vos favoris à tout moment.
+        Vous pouvez aussi demander la suppression de votre compte et des
+        renseignements associés en écrivant à
+        <a href="mailto:{{ CONTACT_EMAIL }}">{{ CONTACT_EMAIL }}</a>.</p>
+
+      <h2>6. Vos droits (Loi 25 — Québec)</h2>
+      <p>Conformément à la législation applicable au Québec, vous avez le droit
+        d'<strong>accéder</strong> à vos renseignements, de les <strong>rectifier</strong>,
+        d'en demander la <strong>suppression</strong>, de <strong>retirer votre
+        consentement</strong> et d'obtenir une copie de vos données. Pour exercer ces
+        droits : <a href="mailto:{{ CONTACT_EMAIL }}">{{ CONTACT_EMAIL }}</a>.</p>
+
+      <h2>7. Jeunes utilisateurs</h2>
+      <p>{{ SITE_NAME }} s'adresse notamment aux jeunes. Si vous avez
+        <strong>moins de 14 ans</strong>, le consentement d'un parent ou d'un tuteur
+        est requis pour créer un compte. Nous limitons la collecte au strict minimum.</p>
+
+      <h2>8. Sécurité</h2>
+      <p>Nous mettons en place des mesures raisonnables (connexions chiffrées, mots
+        de passe stockés de façon sécurisée). Aucun système n'est infaillible ; en
+        cas d'incident, nous agirons conformément à la loi.</p>
+
+      <h2>9. Modifications</h2>
+      <p>Cette politique peut évoluer ; la date de mise à jour ci-dessus indique la
+        version en vigueur.</p>
+
+      <h2>10. Nous joindre</h2>
+      <p>Pour toute question sur vos renseignements personnels :
+        <a href="mailto:{{ CONTACT_EMAIL }}">{{ CONTACT_EMAIL }}</a>.</p>
+
+      <aside class="content-warning" role="note">
+        <p class="content-warning__title">Important</p>
+        <p>{{ DISCLAIMER }} {{ CRISIS_NOTE }}
+          <a href="{% url 'resources:list' %}">Voir les ressources d'aide</a>.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+{% endblock %}

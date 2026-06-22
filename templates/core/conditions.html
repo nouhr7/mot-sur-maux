@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{# Modèle de conditions d'utilisation — à faire valider par un·e juriste avant
+   une ouverture publique large. #}
+
+{% block title %}Conditions d'utilisation — {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<section class="article-hero">
+  <div class="container article-hero__inner">
+    <p class="eyebrow" style="color:#9fd3bd">Notre entente</p>
+    <h1>Conditions d'utilisation</h1>
+    <p class="meta">Dernière mise à jour : 22 juin 2026</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="legal">
+      <p>En utilisant {{ SITE_NAME }}, vous acceptez les conditions suivantes,
+        pensées pour faire de cet espace un lieu sûr et bienveillant.</p>
+
+      <h2>1. Notre mission</h2>
+      <p>{{ SITE_NAME }} est un projet artistique, éducatif et social qui favorise
+        le mieux-être et l'expression des émotions à travers l'écriture.</p>
+
+      <h2>2. Ce que ce site n'est pas</h2>
+      <p>{{ SITE_NAME }} <strong>n'est pas un service d'urgence</strong> ni un
+        substitut à un suivi psychologique ou médical professionnel. En cas de
+        détresse ou de pensées suicidaires, composez ou textez le <strong>9-8-8</strong>
+        (Canada), 24 h/24, ou consultez nos
+        <a href="{% url 'resources:list' %}">ressources d'aide</a>.</p>
+
+      <h2>3. Utilisation respectueuse</h2>
+      <p>Vous vous engagez à utiliser la plateforme avec bienveillance : aucun
+        contenu haineux, violent, harcelant, diffamatoire ou illégal ; du respect
+        envers les autres et envers vous-même.</p>
+
+      <h2>4. Vos textes et soumissions</h2>
+      <p>Vous demeurez l'auteur·e de vos textes. En soumettant un texte, vous
+        autorisez {{ SITE_NAME }} à le lire et, éventuellement, à s'en inspirer de
+        façon <strong>anonymisée</strong> pour créer des contenus bienveillants.
+        Vous pouvez demander le retrait d'un contenu vous concernant.</p>
+
+      <h2>5. Votre compte</h2>
+      <p>Vous êtes responsable de la confidentialité de votre mot de passe et des
+        activités sur votre compte. Prévenez-nous en cas d'utilisation non autorisée.</p>
+
+      <h2>6. Propriété intellectuelle</h2>
+      <p>Les contenus publiés par {{ SITE_NAME }} (textes, visuels, logo) lui
+        appartiennent ou sont utilisés avec autorisation. Merci de ne pas les
+        reproduire sans permission.</p>
+
+      <h2>7. Modération</h2>
+      <p>Nous pouvons modifier, masquer ou retirer tout contenu, ou suspendre un
+        compte, afin de préserver la sécurité et la bienveillance de l'espace.</p>
+
+      <h2>8. Limitation de responsabilité</h2>
+      <p>Le site est fourni « tel quel ». Dans les limites permises par la loi,
+        {{ SITE_NAME }} ne saurait être tenu responsable des dommages liés à
+        l'utilisation du site.</p>
+
+      <h2>9. Droit applicable</h2>
+      <p>Les présentes conditions sont régies par les lois applicables au Québec et
+        au Canada.</p>
+
+      <h2>10. Modifications</h2>
+      <p>Nous pouvons mettre à jour ces conditions ; la date ci-dessus indique la
+        version en vigueur.</p>
+
+      <h2>11. Nous joindre</h2>
+      <p>Questions : <a href="mailto:{{ CONTACT_EMAIL }}">{{ CONTACT_EMAIL }}</a>.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

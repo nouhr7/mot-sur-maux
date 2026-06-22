@@ -39,6 +39,16 @@ def projet(request):
     )
 
 
+def confidentialite(request):
+    """Politique de confidentialité (modèle à faire valider juridiquement)."""
+    return render(request, "core/confidentialite.html")
+
+
+def conditions(request):
+    """Conditions d'utilisation (modèle à faire valider juridiquement)."""
+    return render(request, "core/conditions.html")
+
+
 def contact(request):
     if request.method == "POST":
         form = ContactForm(request.POST)

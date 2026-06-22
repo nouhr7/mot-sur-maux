@@ -132,6 +132,14 @@ class Article(models.Model):
     )
     cover_credit = models.CharField("Crédit photo", max_length=160, blank=True)
 
+    content_warning = models.CharField(
+        "Avertissement de contenu",
+        max_length=200,
+        blank=True,
+        help_text="Si l'article aborde un sujet sensible (suicide, automutilation, "
+        "violence…), nommez-le ici. Un encadré bienveillant s'affichera avant le texte.",
+    )
+
     is_published = models.BooleanField("Publié", default=False)
     is_featured = models.BooleanField("À la une", default=False)
     published_at = models.DateTimeField("Date de publication", default=timezone.now)

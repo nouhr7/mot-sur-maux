@@ -90,8 +90,13 @@
       </div>
     </div>
     <div class="container site-footer__legal">
-      <p>© {{ CURRENT_YEAR }} Mots sur Maux. Fait avec soin, pour mettre des mots sur les maux.
-        <a href="{% url 'team:dashboard' %}">Espace équipe</a></p>
+      <p>© {{ CURRENT_YEAR }} Mots sur Maux. Fait avec soin, pour mettre des mots sur les maux.</p>
+      <p class="site-footer__links">
+        <a href="{% url 'core:confidentialite' %}">Confidentialité</a>
+        <a href="{% url 'core:conditions' %}">Conditions d'utilisation</a>
+        <a href="{% url 'core:contact' %}">Contact</a>
+        <a href="{% url 'team:dashboard' %}">Espace équipe</a>
+      </p>
     </div>
   </footer>
 </body>
