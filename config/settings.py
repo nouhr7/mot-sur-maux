@@ -42,6 +42,14 @@ CSRF_TRUSTED_ORIGINS = [
     if origin
 ]
 
+# Common free hosting domains are allowed by default, so deploying needs no
+# extra host configuration (works on PythonAnywhere and Render out of the box).
+ALLOWED_HOSTS += [".pythonanywhere.com", ".onrender.com"]
+CSRF_TRUSTED_ORIGINS += [
+    "https://*.pythonanywhere.com",
+    "https://*.onrender.com",
+]
+
 # Convenience: when developing locally (DEBUG on), allow sharing the dev server
 # through an ngrok tunnel without any extra configuration. Any ngrok subdomain
 # is accepted for both host and CSRF checks. This block does nothing in
