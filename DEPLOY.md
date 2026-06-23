@@ -25,6 +25,13 @@ C'est l'option la plus simple pour votre besoin : le site reste joignable en
 permanence, et vous pouvez **téléverser votre base actuelle** pour conserver le
 compte et le contenu déjà créés.
 
+> 🐍 **« Python / Django trop vieux ? »** Le Django ancien proposé par
+> PythonAnywhere (son option de configuration rapide « Django ») n'est **pas**
+> utilisé : on installe **notre** Django 5.2 dans un *virtualenv* (étape 2). Il
+> suffit de choisir **Python 3.10 ou plus récent** (3.13 si possible) aux
+> étapes 2 et 3. Utilisez toujours **« Manual configuration »**, jamais
+> l'option « Django » toute faite.
+
 ### 1. Créer le compte
 Inscrivez-vous gratuitement sur **https://www.pythonanywhere.com** (compte
 « Beginner », sans carte de crédit). Votre site sera à
@@ -36,16 +43,19 @@ Onglet **Consoles → Bash**, puis :
 git clone https://github.com/nouhr7/mot-sur-maux.git
 cd mot-sur-maux
 git checkout claude/hopeful-maxwell-sojveh
-python3 -m venv .venv
+python3.10 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 python manage.py migrate
 python manage.py collectstatic --no-input
 ```
+> Remplacez `python3.10` par la version la plus récente offerte (`python3.13`,
+> `python3.12`…). Tapez `python3.13 --version` pour vérifier ce qui existe.
 
 ### 3. Créer l'application web
-Onglet **Web → Add a new web app → Manual configuration → Python 3.10** (ou la
-version proposée).
+Onglet **Web → Add a new web app → « Manual configuration »** (⚠️ surtout **pas**
+l'option « Django » toute faite) → choisissez **Python 3.10 ou plus récent**
+(la même version qu'à l'étape 2).
 
 ### 4. Indiquer le virtualenv
 Dans la section **Virtualenv** de l'onglet Web, entrez :
