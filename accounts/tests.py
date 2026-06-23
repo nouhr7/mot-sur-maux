@@ -128,3 +128,73 @@ class StaffProfileTests(TestCase):
         )
         self.assertRedirects(resp, reverse("team:profile"))
         self.assertEqual(User.objects.get(username="redac").first_name, "Nouhr")
+
+
+class AccessControlTests(TestCase):
+    """Broken Access Control / IDOR regressions — enforcement is server-side."""
+
+    def setUp(self):
+        self.alice = User.objects.create_user("alice", password="pw")
+        self.bob = User.objects.create_user("bob", password="pw")
+        self.cat = Category.objects.create(name="Anxiété")
+        self.author = Author.objects.create(name="Collectif")
+        self.published = Article.objects.create(
+            title="Publié", category=self.cat, author=self.author,
+            excerpt="x", content="<p>x</p>", is_published=True,
+        )
+        self.draft = Article.objects.create(
+            title="Brouillon", category=self.cat, author=self.author,
+            excerpt="x", content="<p>x</p>", is_published=False,
+        )
+
+    def test_cannot_delete_another_members_journal(self):
+        entry = JournalEntry.objects.create(user=self.alice, content="privé")
+        self.client.login(username="bob", password="pw")
+        resp = self.client.post(reverse("accounts:journal_delete", args=[entry.pk]))
+        self.assertEqual(resp.status_code, 404)
+        self.assertTrue(JournalEntry.objects.filter(pk=entry.pk).exists())
+
+    def test_cannot_open_another_members_journal(self):
+        entry = JournalEntry.objects.create(user=self.alice, content="privé")
+        self.client.login(username="bob", password="pw")
+        self.assertEqual(
+            self.client.get(reverse("accounts:journal_edit", args=[entry.pk])).status_code,
+            404,
+        )
+
+    def test_member_sees_only_own_submissions(self):
+        Submission.objects.create(message="confidentiel", owner=self.alice, topic="alice-topic")
+        self.client.login(username="bob", password="pw")
+        html = self.client.get(reverse("accounts:submission_list")).content.decode()
+        self.assertNotIn("alice-topic", html)
+
+    def test_bookmark_toggle_rejects_get(self):
+        self.client.login(username="alice", password="pw")
+        resp = self.client.get(reverse("accounts:bookmark_toggle", args=[self.published.id]))
+        self.assertEqual(resp.status_code, 405)
+
+    def test_cannot_bookmark_unpublished_article(self):
+        self.client.login(username="alice", password="pw")
+        resp = self.client.post(reverse("accounts:bookmark_toggle", args=[self.draft.id]))
+        self.assertEqual(resp.status_code, 404)
+        self.assertFalse(
+            Bookmark.objects.filter(user=self.alice, article=self.draft).exists()
+        )
+
+    def test_can_remove_bookmark_even_if_article_unpublished(self):
+        Bookmark.objects.create(user=self.alice, article=self.draft)
+        self.client.login(username="alice", password="pw")
+        self.client.post(reverse("accounts:bookmark_toggle", args=[self.draft.id]))
+        self.assertFalse(
+            Bookmark.objects.filter(user=self.alice, article=self.draft).exists()
+        )
+
+    def test_anonymous_redirected_from_member_pages(self):
+        for name in [
+            "accounts:dashboard", "accounts:journal_list", "accounts:bookmark_list",
+            "accounts:read_list", "accounts:submission_list", "accounts:settings",
+        ]:
+            with self.subTest(page=name):
+                resp = self.client.get(reverse(name))
+                self.assertEqual(resp.status_code, 302)
+                self.assertIn(reverse("accounts:login"), resp.url)

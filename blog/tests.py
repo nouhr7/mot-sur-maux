@@ -53,3 +53,22 @@ class ArticleSearchTests(TestCase):
         resp = self.client.get(reverse("blog:article_list"))
         self.assertContains(resp, "Comprendre le stress")
         self.assertContains(resp, "La joie simple")
+
+
+class DraftAccessTests(TestCase):
+    """A draft article must not be reachable by URL (no force-browsing)."""
+
+    def setUp(self):
+        self.cat = Category.objects.create(name="Anxiété")
+        self.author = Author.objects.create(name="Collectif")
+        self.draft = Article.objects.create(
+            title="Brouillon confidentiel", category=self.cat, author=self.author,
+            excerpt="x", content="<p>secret</p>", is_published=False,
+        )
+
+    def test_draft_returns_404_by_url(self):
+        self.assertEqual(self.client.get(self.draft.get_absolute_url()).status_code, 404)
+
+    def test_draft_not_listed(self):
+        html = self.client.get(reverse("blog:article_list")).content.decode()
+        self.assertNotIn("Brouillon confidentiel", html)

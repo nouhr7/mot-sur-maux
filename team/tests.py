@@ -184,3 +184,53 @@ class TeamWorkflowTests(TestCase):
         )
         req.refresh_from_db()
         self.assertEqual(req.status, WorkshopRequest.Status.SCHEDULED)
+
+
+class TeamForceBrowseTests(TestCase):
+    """A logged-in non-staff member must not reach any team action by URL."""
+
+    def setUp(self):
+        User = get_user_model()
+        User.objects.create_user("member", password="pw")  # is_staff=False
+        self.cat = Category.objects.create(name="Anxiété")
+        self.author = Author.objects.create(name="Collectif")
+        self.article = Article.objects.create(
+            title="T", category=self.cat, author=self.author,
+            excerpt="x", content="<p>x</p>",
+        )
+        self.sub = Submission.objects.create(message="x")
+        self.req = WorkshopRequest.objects.create(
+            organization_name="O", contact_name="C", email="c@d.ca"
+        )
+
+    def test_non_staff_forbidden_on_every_team_action(self):
+        self.client.login(username="member", password="pw")
+        urls = [
+            reverse("team:dashboard"),
+            reverse("team:article_list"),
+            reverse("team:article_create"),
+            reverse("team:article_edit", args=[self.article.pk]),
+            reverse("team:article_delete", args=[self.article.pk]),
+            reverse("team:workshop_create"),
+            reverse("team:submission_list"),
+            reverse("team:submission_detail", args=[self.sub.pk]),
+            reverse("team:request_list"),
+            reverse("team:profile"),
+        ]
+        for url in urls:
+            with self.subTest(url=url):
+                self.assertEqual(self.client.get(url).status_code, 403)
+
+    def test_non_staff_cannot_post_team_action(self):
+        # Even a direct POST (bypassing the hidden UI) is rejected.
+        self.client.login(username="member", password="pw")
+        resp = self.client.post(
+            reverse("team:article_delete", args=[self.article.pk])
+        )
+        self.assertEqual(resp.status_code, 403)
+        self.assertTrue(Article.objects.filter(pk=self.article.pk).exists())
+
+    def test_anonymous_redirected_to_team_login(self):
+        resp = self.client.get(reverse("team:article_create"))
+        self.assertEqual(resp.status_code, 302)
+        self.assertIn(reverse("team:login"), resp.url)

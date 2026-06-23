@@ -136,22 +136,25 @@ def bookmark_list(request):
 @login_required
 @require_POST
 def bookmark_toggle(request, article_id):
-    article = get_object_or_404(Article, pk=article_id)
-    bookmark, created = Bookmark.objects.get_or_create(
-        user=request.user, article=article
-    )
-    if created:
-        messages.success(request, "Article ajouté à vos favoris.")
-    else:
+    # Removing a bookmark is always allowed; adding one is restricted to
+    # published articles, so a draft can't be bookmarked by guessing its id.
+    bookmark = Bookmark.objects.filter(
+        user=request.user, article_id=article_id
+    ).first()
+    if bookmark:
         bookmark.delete()
         messages.info(request, "Article retiré de vos favoris.")
+    else:
+        article = get_object_or_404(Article.published, pk=article_id)
+        Bookmark.objects.create(user=request.user, article=article)
+        messages.success(request, "Article ajouté à vos favoris.")
 
     nxt = request.POST.get("next")
     if nxt and url_has_allowed_host_and_scheme(
         nxt, allowed_hosts={request.get_host()}
     ):
         return redirect(nxt)
-    return redirect(article.get_absolute_url())
+    return redirect("accounts:bookmark_list")
 
 
 # ---------------------------------------------------------------------------
