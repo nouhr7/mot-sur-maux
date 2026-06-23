@@ -72,3 +72,19 @@ class DraftAccessTests(TestCase):
     def test_draft_not_listed(self):
         html = self.client.get(reverse("blog:article_list")).content.decode()
         self.assertNotIn("Brouillon confidentiel", html)
+
+
+class OutputSanitisationTests(TestCase):
+    """Article HTML is sanitised on output, even if it bypassed the editor."""
+
+    def test_script_entered_via_admin_is_stripped_on_render(self):
+        cat = Category.objects.create(name="X")
+        author = Author.objects.create(name="A")
+        # Content saved directly (as the admin textarea would allow).
+        article = Article.objects.create(
+            title="Direct", category=cat, author=author, excerpt="x",
+            content="<p>ok</p><script>alert(1)</script>", is_published=True,
+        )
+        html = self.client.get(article.get_absolute_url()).content.decode()
+        self.assertNotIn("<script>alert(1)", html)
+        self.assertIn("<p>ok</p>", html)

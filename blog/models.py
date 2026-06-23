@@ -198,14 +198,17 @@ class Article(models.Model):
         from django.utils.html import escape
         from django.utils.safestring import mark_safe
 
+        from team.sanitize import clean_html
+
         content = self.content or ""
         if re.search(
             r"</(p|h2|h3|h4|ul|ol|li|blockquote|strong|em|b|i|u|a)>",
             content,
             re.IGNORECASE,
         ):
-            # Already HTML (and sanitised on save by the editor form).
-            return mark_safe(content)
+            # HTML body. Sanitise on output too, so even content entered
+            # directly in the admin (bypassing the editor form) is safe.
+            return mark_safe(clean_html(content))
         paragraphs = "".join(f"<p>{escape(p)}</p>" for p in self.paragraphs)
         return mark_safe(paragraphs)
 
